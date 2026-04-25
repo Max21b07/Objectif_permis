@@ -1,6 +1,6 @@
-/* global self, caches, fetch */
+/* global self, caches, fetch, URL */
 
-const CACHE_NAME = "objectif-permis-v1";
+const CACHE_NAME = "objectif-permis-v2";
 const BASE = "/Objectif_permis/";
 const APP_SHELL = [BASE, `${BASE}manifest.webmanifest`, `${BASE}icon-192.svg`, `${BASE}icon-512.svg`];
 
@@ -17,7 +17,20 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET" || !event.request.url.includes(BASE)) return;
+  const requestUrl = new URL(event.request.url);
+  if (event.request.method !== "GET" || requestUrl.origin !== self.location.origin || !requestUrl.pathname.startsWith(BASE)) return;
+
+  if (event.request.mode === "navigate" || ["script", "style", "worker"].includes(event.request.destination)) {
+    event.respondWith(
+      fetch(event.request).then((response) => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => undefined);
+        return response;
+      }).catch(() => caches.match(event.request).then((cached) => cached || caches.match(BASE))),
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
       const clone = response.clone();
