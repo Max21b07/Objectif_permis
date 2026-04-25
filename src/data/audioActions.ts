@@ -40,7 +40,31 @@ export const audioActions: AudioActionItem[] = [
   { id: "pieton", promptFrench: "Piéton", promptVietnamese: "Người đi bộ", promptEnglish: "Pedestrian", target: "pedestrian", category: "Pedestrians", audio: { fr: "audio/maxime/20-pieton.wav" } },
 ];
 
+const maximeFrenchAudio: Record<string, string> = {
+  "freine": "audio/maxime/01-freine.wav",
+  "freine maintenant": "audio/maxime/02-freine-maintenant.wav",
+  "ralentis": "audio/maxime/03-ralentis.wav",
+  "ralentis doucement": "audio/maxime/04-ralentis-doucement.wav",
+  "accélère doucement": "audio/maxime/05-accelere-doucement.wav",
+  "tourne à droite": "audio/maxime/06-tourne-a-droite.wav",
+  "tourne à gauche": "audio/maxime/07-tourne-a-gauche.wav",
+  "va tout droit": "audio/maxime/08-va-tout-droit.wav",
+  "stop": "audio/maxime/09-stop.wav",
+  "attends": "audio/maxime/10-attends.wav",
+  "laisse passer": "audio/maxime/11-laisse-passer.wav",
+  "mets le clignotant": "audio/maxime/12-mets-le-clignotant.wav",
+  "regarde le rétroviseur": "audio/maxime/13-regarde-le-retroviseur.wav",
+  "contrôle l'angle mort": "audio/maxime/14-controle-angle-mort.wav",
+  "garde ta droite": "audio/maxime/15-garde-ta-droite.wav",
+  "reste dans ta voie": "audio/maxime/16-reste-dans-ta-voie.wav",
+  "trop vite": "audio/maxime/17-trop-vite.wav",
+  "doucement": "audio/maxime/18-doucement.wav",
+  "recule doucement": "audio/maxime/19-recule-doucement.wav",
+  "piéton": "audio/maxime/20-pieton.wav",
+  "vélo": "audio/maxime/21-velo.wav",
+  "voiture derrière": "audio/maxime/22-voiture-derriere.wav",
+};
+
 export function getMaximeFrenchAudio(french: string): string | undefined {
-  const normalized = french.trim().toLowerCase();
-  return audioActions.find((item) => item.promptFrench.toLowerCase() === normalized)?.audio?.fr;
+  return maximeFrenchAudio[french.trim().toLowerCase()];
 }
