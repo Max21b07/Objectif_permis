@@ -56,6 +56,11 @@ export const ui = {
     en: "Category",
     fr: "Catégorie",
   },
+  vocabularyLabel: {
+    vi: "Từ vựng",
+    en: "Vocabulary",
+    fr: "Vocabulaire",
+  },
   allCategories: {
     vi: "Tất cả",
     en: "All",
@@ -235,6 +240,236 @@ export const ui = {
     vi: "Không có câu hỏi cho bộ lọc này.",
     en: "No question for this filter.",
     fr: "Aucune question pour ce filtre.",
+  },
+  helloMinh: {
+    vi: "Xin chào Minh Phương",
+    en: "Hello Minh Phương",
+    fr: "Bonjour Minh Phương",
+  },
+  todayGoal: {
+    vi: "Mục tiêu hôm nay",
+    en: "Today's goal",
+    fr: "Objectif du jour",
+  },
+  fiveMinuteGoal: {
+    vi: "Học 5 phút: 5 từ, 3 consignes, 3 câu quiz và 1 tình huống an toàn.",
+    en: "Learn for 5 minutes: 5 words, 3 commands, 3 quiz questions and 1 safety scenario.",
+    fr: "Apprendre 5 minutes : 5 mots, 3 consignes, 3 questions et 1 scénario sécurité.",
+  },
+  startFiveMinutes: {
+    vi: "Bắt đầu 5 phút",
+    en: "Start 5 minutes",
+    fr: "Commencer 5 minutes",
+  },
+  currentStreak: {
+    vi: "Streak hiện tại",
+    en: "Current streak",
+    fr: "Série actuelle",
+  },
+  bestStreak: {
+    vi: "Streak tốt nhất",
+    en: "Best streak",
+    fr: "Meilleure série",
+  },
+  globalProgress: {
+    vi: "Tiến bộ tổng thể",
+    en: "Global progress",
+    fr: "Progression globale",
+  },
+  averageScore: {
+    vi: "Điểm trung bình",
+    en: "Average score",
+    fr: "Score moyen",
+  },
+  recentBadge: {
+    vi: "Badge mới",
+    en: "Recent badge",
+    fr: "Badge récent",
+  },
+  quickAccess: {
+    vi: "Vào nhanh",
+    en: "Quick access",
+    fr: "Accès rapide",
+  },
+  dailyDrive: {
+    vi: "Daily Drive",
+    en: "Daily Drive",
+    fr: "Daily Drive",
+  },
+  progressPage: {
+    vi: "Tiến bộ",
+    en: "Progress",
+    fr: "Progression",
+  },
+  practiceMaxime: {
+    vi: "Luyện với Maxime",
+    en: "Practice with Maxime",
+    fr: "Practice with Maxime",
+  },
+  beforePractice: {
+    vi: "Trước buổi lái",
+    en: "Before Practice",
+    fr: "Avant la séance",
+  },
+  afterPractice: {
+    vi: "Sau buổi lái",
+    en: "After Practice",
+    fr: "Après la séance",
+  },
+  continueTomorrow: {
+    vi: "Tiếp tục ngày mai",
+    en: "Continue tomorrow",
+    fr: "Continuer demain",
+  },
+  anotherQuickSession: {
+    vi: "Làm thêm một buổi nhanh",
+    en: "Do another quick session",
+    fr: "Faire une autre session rapide",
+  },
+  dailyComplete: {
+    vi: "Hoàn thành Daily Drive",
+    en: "Daily Drive complete",
+    fr: "Daily Drive terminé",
+  },
+  encouragement: {
+    vi: "Tốt lắm. Mỗi ngày 5 phút sẽ giúp phản xạ tiếng Pháp nhanh hơn.",
+    en: "Good work. Five minutes every day makes French driving commands faster.",
+    fr: "Bon travail. Cinq minutes par jour rendent les consignes plus rapides.",
+  },
+  listenFrench: {
+    vi: "Nghe tiếng Pháp",
+    en: "Listen in French",
+    fr: "Écouter en français",
+  },
+  listenEnglish: {
+    vi: "Nghe tiếng Anh",
+    en: "Listen in English",
+    fr: "Écouter en anglais",
+  },
+  listenVietnamese: {
+    vi: "Nghe tiếng Việt",
+    en: "Listen in Vietnamese",
+    fr: "Écouter en vietnamien",
+  },
+  previous: {
+    vi: "Trước",
+    en: "Previous",
+    fr: "Précédent",
+  },
+  quickSession: {
+    vi: "Session nhanh 10 thẻ",
+    en: "Quick 10-card session",
+    fr: "Session rapide 10 cartes",
+  },
+  startChecklist: {
+    vi: "Bắt đầu checklist",
+    en: "Start checklist",
+    fr: "Commencer la checklist",
+  },
+  checklistDone: {
+    vi: "Sẵn sàng hơn rồi. Nhớ: chỉ luyện lái trong điều kiện hợp pháp và có bảo hiểm.",
+    en: "You are more ready. Remember: only practice in a legal and insured context.",
+    fr: "Vous êtes plus prête. Rappel : pratiquer seulement dans un cadre légal et assuré.",
+  },
+  todayCommands: {
+    vi: "Consignes hôm nay",
+    en: "Today's commands",
+    fr: "Consignes du jour",
+  },
+  mood: {
+    vi: "Cảm xúc",
+    en: "Mood",
+    fr: "Humeur",
+  },
+  easy: {
+    vi: "Dễ",
+    en: "Easy",
+    fr: "Facile",
+  },
+  okay: {
+    vi: "Ổn",
+    en: "OK",
+    fr: "OK",
+  },
+  stressful: {
+    vi: "Căng thẳng",
+    en: "Stressful",
+    fr: "Stressant",
+  },
+  difficultTopics: {
+    vi: "Chủ đề khó",
+    en: "Difficult topics",
+    fr: "Sujets difficiles",
+  },
+  optionalNote: {
+    vi: "Ghi chú thêm",
+    en: "Optional note",
+    fr: "Note optionnelle",
+  },
+  saveDebrief: {
+    vi: "Lưu debrief",
+    en: "Save debrief",
+    fr: "Sauvegarder le débrief",
+  },
+  recommendation: {
+    vi: "Gợi ý ôn tiếp",
+    en: "Next review",
+    fr: "Révision conseillée",
+  },
+  resetProgress: {
+    vi: "Xóa tiến bộ",
+    en: "Reset progress",
+    fr: "Réinitialiser",
+  },
+  resetConfirm: {
+    vi: "Bạn chắc chắn muốn xóa tiến bộ trên thiết bị này?",
+    en: "Are you sure you want to reset progress on this device?",
+    fr: "Voulez-vous vraiment effacer la progression sur cet appareil ?",
+  },
+  sessionsDone: {
+    vi: "Sessions hoàn thành",
+    en: "Sessions completed",
+    fr: "Sessions terminées",
+  },
+  badges: {
+    vi: "Badges",
+    en: "Badges",
+    fr: "Badges",
+  },
+  strongCategories: {
+    vi: "Chủ đề mạnh",
+    en: "Strong categories",
+    fr: "Catégories fortes",
+  },
+  weakCategories: {
+    vi: "Chủ đề cần ôn",
+    en: "Weak categories",
+    fr: "Catégories à revoir",
+  },
+  locked: {
+    vi: "Chưa mở",
+    en: "Locked",
+    fr: "Verrouillé",
+  },
+  unlocked: {
+    vi: "Đã mở",
+    en: "Unlocked",
+    fr: "Débloqué",
+  },
+  installIphone: {
+    vi: "Cài lên iPhone",
+    en: "Add to iPhone Home Screen",
+    fr: "Installer sur iPhone",
+  },
+  installSteps: {
+    vi: "Mở bằng Safari, bấm Chia sẻ, chọn Thêm vào Màn hình chính, rồi bấm Thêm.",
+    en: "Open in Safari, tap Share, choose Add to Home Screen, then tap Add.",
+    fr: "Ouvrir dans Safari, toucher Partager, choisir Ajouter à l'écran d'accueil, puis Ajouter.",
+  },
+  legalMini: {
+    vi: "Không luyện lái trên đường mở nếu không có khung pháp lý và bảo hiểm phù hợp.",
+    en: "Do not practice on public roads without the right legal and insured context.",
+    fr: "Ne pas pratiquer sur route ouverte sans cadre légal et assurance adaptée.",
   },
   quizCategoryLabel: {
     vi: "Lọc quiz theo chủ đề",

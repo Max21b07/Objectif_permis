@@ -8,3 +8,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <App />
   </React.StrictMode>,
 );
+
+if (typeof window !== "undefined" && typeof navigator !== "undefined" && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/Objectif_permis/sw.js").catch(() => undefined);
+  });
+}

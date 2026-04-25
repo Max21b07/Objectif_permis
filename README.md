@@ -46,6 +46,12 @@ npm install --cache .npm-cache
 npm run dev
 ```
 
+Avec la configuration GitHub Pages, Vite affiche l'application sous :
+
+```text
+http://localhost:5173/Objectif_permis/
+```
+
 ## Build
 
 ```bash
@@ -81,6 +87,17 @@ La langue initiale est choisie par `getInitialLanguage()` :
 Quand l’utilisateur change de langue, `setLanguage(lang)` sauvegarde la préférence dans `localStorage` et met à jour l’attribut `lang` du document HTML.
 
 Aucune API IP, géolocalisation GPS ou cookie tiers n’est utilisé.
+
+## Installation iPhone
+
+Le site contient un manifest PWA et un service worker simple pour permettre l'ajout à l'écran d'accueil et une consultation partielle hors ligne.
+
+Sur iPhone :
+
+1. Ouvrir `https://max21b07.github.io/Objectif_permis/` dans Safari.
+2. Appuyer sur Partager.
+3. Choisir Ajouter à l'écran d'accueil.
+4. Appuyer sur Ajouter.
 
 ## Sources officielles
 

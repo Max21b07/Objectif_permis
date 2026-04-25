@@ -13,6 +13,14 @@ interface Props {
 }
 
 export function Layout({ language, active, onLanguageChange, onNavigate, children }: Props) {
+  const bottomItems: Array<{ id: ModuleId; label: string; icon: string }> = [
+    { id: "home", label: ui.home[language], icon: "🏠" },
+    { id: "daily", label: "Daily", icon: "⚡" },
+    { id: "commands", label: "Cards", icon: "🃏" },
+    { id: "quiz", label: "Quiz", icon: "✅" },
+    { id: "progress", label: ui.progressPage[language], icon: "📈" },
+  ];
+
   return (
     <div className="min-h-screen">
       <header className="no-print sticky top-0 z-20 border-b border-moss/10 bg-cream/85 backdrop-blur-xl">
@@ -43,7 +51,23 @@ export function Layout({ language, active, onLanguageChange, onNavigate, childre
           ))}
         </nav>
       </header>
-      <main className="mx-auto max-w-7xl px-4 py-8 md:py-12">{children}</main>
+      <main className="mx-auto max-w-7xl px-4 pb-28 pt-8 md:py-12">{children}</main>
+      <nav className="no-print fixed inset-x-0 bottom-0 z-30 border-t border-moss/10 bg-cream/95 px-2 pb-[max(0.7rem,env(safe-area-inset-bottom))] pt-2 shadow-soft backdrop-blur-xl md:hidden">
+        <div className="mx-auto grid max-w-lg grid-cols-5 gap-1">
+          {bottomItems.map((item) => (
+            <button
+              type="button"
+              key={item.id}
+              onClick={() => onNavigate(item.id)}
+              aria-label={item.label}
+              className={`focus-ring rounded-2xl px-2 py-2 text-center text-xs font-extrabold ${active === item.id ? "bg-moss text-white" : "text-moss"}`}
+            >
+              <span className="block text-lg" aria-hidden="true">{item.icon}</span>
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </nav>
       <footer className="no-print mx-auto max-w-7xl px-4 pb-8 text-sm text-ink/60">
         <p>{ui.sourceDisclaimer[language]}</p>
       </footer>

@@ -5,6 +5,11 @@ export type Importance = "Vital" | "Important" | "Useful";
 export type ModuleId =
   | "home"
   | "legal"
+  | "daily"
+  | "practice-maxime"
+  | "progress"
+  | "before-practice"
+  | "after-practice"
   | "driving"
   | "vietnam-france"
   | "commands"
@@ -95,4 +100,24 @@ export interface SourceLink {
   title: string;
   url: string;
   note: LocalizedString;
+}
+
+export interface BadgeDefinition {
+  id: string;
+  icon: string;
+  title: LocalizedString;
+  description: LocalizedString;
+  category: string;
+}
+
+export interface MiniScenario {
+  id: string;
+  title: LocalizedString;
+  question: LocalizedString;
+  answers: LocalizedString[];
+  correctIndex: number;
+  explanation: LocalizedString;
+  category: string;
+  level: "easy" | "medium";
+  visual: "roundabout" | "priority" | "pedestrian" | "stop" | "yield" | "lane" | "blindspot" | "bike" | "bus" | "zone30" | "rain" | "parking";
 }

@@ -2,22 +2,25 @@ import { useMemo, useState } from "react";
 import { quizQuestions } from "../data/quiz";
 import { ui } from "../locales/translations";
 import type { Language } from "../locales/types";
+import { getProgress, recordSession, saveProgress, type LearningProgress } from "../utils/progress";
 
 const categories = ["All", ...Array.from(new Set(quizQuestions.map((question) => question.category)))];
 const levels = ["all", "easy", "intermediate", "scenario"] as const;
 
-export function Quiz({ language }: { language: Language }) {
+export function Quiz({ language, onProgressChange }: { language: Language; onProgressChange?: (progress: LearningProgress) => void }) {
   const [category, setCategory] = useState("All");
   const [level, setLevel] = useState<(typeof levels)[number]>("all");
+  const [quickMode, setQuickMode] = useState(false);
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answers, setAnswers] = useState<Record<string, number>>({});
 
   const questions = useMemo(() => {
-    return quizQuestions.filter((question) => {
+    const filtered = quizQuestions.filter((question) => {
       return (category === "All" || question.category === category) && (level === "all" || question.level === level);
     });
-  }, [category, level]);
+    return quickMode ? filtered.slice(0, 5) : filtered;
+  }, [category, level, quickMode]);
 
   const current = questions[index] ?? questions[0];
   const completed = questions.length > 0 && Object.keys(answers).filter((id) => questions.some((q) => q.id === id)).length === questions.length;
@@ -28,6 +31,17 @@ export function Quiz({ language }: { language: Language }) {
     setIndex(0);
     setSelected(null);
     setAnswers({});
+  }
+
+  function saveQuizScore() {
+    const finalScore = Math.round((score / questions.length) * 100);
+    const progress = getProgress();
+    const next = recordSession(
+      { ...progress, quizCompleted: progress.quizCompleted + 1 },
+      { id: `${Date.now()}`, date: new Date().toISOString().slice(0, 10), type: "quiz", score: finalScore, categories: Array.from(new Set(questions.map((item) => item.category))).slice(0, 4) },
+    );
+    saveProgress(next);
+    onProgressChange?.(next);
   }
 
   function check() {
@@ -61,6 +75,13 @@ export function Quiz({ language }: { language: Language }) {
         </label>
         <button type="button" onClick={reset} className="focus-ring rounded-2xl bg-mint px-4 py-3 font-extrabold text-moss">{ui.restart[language]}</button>
       </div>
+      <button
+        type="button"
+        onClick={() => { setQuickMode((value) => !value); reset(); }}
+        className="focus-ring mt-3 rounded-2xl bg-lemon px-4 py-3 font-extrabold text-ink"
+      >
+        {quickMode ? "Normal quiz" : "Quick quiz 5"}
+      </button>
 
       <div className="mt-5 rounded-3xl bg-cream p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -114,6 +135,9 @@ export function Quiz({ language }: { language: Language }) {
               : { vi: "Ôn lại các chủ đề có lỗi trước buổi lái tiếp theo.", en: "Review the mistake categories before the next drive.", fr: "Revoir les catégories d'erreurs avant la prochaine séance." }[language]}
           </p>
           {mistakes.length > 0 && <p className="mt-3 text-sm font-bold">{ui.review[language]}: {Array.from(new Set(mistakes.map((item) => item.category))).join(", ")}</p>}
+          <button type="button" onClick={saveQuizScore} className="focus-ring mt-4 rounded-full bg-lemon px-5 py-3 font-extrabold text-ink">
+            {ui.saveDebrief[language]}
+          </button>
         </div>
       )}
     </section>

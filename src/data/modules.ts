@@ -2,6 +2,56 @@ import type { ModuleInfo } from "./types";
 
 export const modules: ModuleInfo[] = [
   {
+    id: "daily",
+    icon: "⚡",
+    title: { vi: "Daily Drive", en: "Daily Drive", fr: "Daily Drive" },
+    description: {
+      vi: "Một buổi học 5 phút mỗi ngày: từ vựng, flashcards, quiz và tình huống.",
+      en: "A 5-minute daily session: vocabulary, flashcards, quiz and one scenario.",
+      fr: "Une session quotidienne de 5 minutes : vocabulaire, flashcards, quiz et scénario.",
+    },
+  },
+  {
+    id: "practice-maxime",
+    icon: "🗣️",
+    title: { vi: "Luyện với Maxime", en: "Practice with Maxime", fr: "Practice with Maxime" },
+    description: {
+      vi: "Hiểu nhanh các consignes tiếng Pháp Maxime có thể nói trong xe.",
+      en: "Quickly understand the French commands Maxime may say in the car.",
+      fr: "Comprendre vite les consignes françaises que Maxime peut dire en voiture.",
+    },
+  },
+  {
+    id: "progress",
+    icon: "📈",
+    title: { vi: "Tiến bộ", en: "Progress", fr: "Progression" },
+    description: {
+      vi: "Streak, badges, điểm trung bình và chủ đề cần ôn.",
+      en: "Streak, badges, average score and topics to review.",
+      fr: "Série, badges, score moyen et sujets à revoir.",
+    },
+  },
+  {
+    id: "before-practice",
+    icon: "🚗",
+    title: { vi: "Trước buổi lái", en: "Before Practice", fr: "Avant la séance" },
+    description: {
+      vi: "Checklist 2 phút trước một buổi luyện lái hợp pháp và có bảo hiểm.",
+      en: "A 2-minute checklist before a legal and insured practice session.",
+      fr: "Checklist de 2 minutes avant une séance légale et assurée.",
+    },
+  },
+  {
+    id: "after-practice",
+    icon: "📝",
+    title: { vi: "Sau buổi lái", en: "After Practice", fr: "Après la séance" },
+    description: {
+      vi: "Debrief nhanh: cảm xúc, điểm khó và bài ôn tiếp theo.",
+      en: "Quick debrief: mood, difficult topics and next review.",
+      fr: "Débrief rapide : humeur, sujets difficiles et prochaine révision.",
+    },
+  },
+  {
     id: "legal",
     icon: "🛡️",
     title: { vi: "Pháp lý & an toàn", en: "Legal & Safety", fr: "Légalité & sécurité" },

@@ -20,9 +20,24 @@ import { VocabularyTable } from "./components/VocabularyTable";
 import { ui } from "./locales/translations";
 import type { Language, LocalizedString } from "./locales/types";
 import { getInitialLanguage, setLanguage as saveLanguage } from "./utils/language";
+import { getProgress, type LearningProgress } from "./utils/progress";
+import {
+  AfterPractice,
+  BeforePractice,
+  DailyDrive,
+  Dashboard,
+  InstallIphoneCard,
+  PracticeWithMaxime,
+  ProgressPage,
+} from "./components/LearningHub";
 
 const pageTitles: Record<ModuleId, LocalizedString> = {
   home: { vi: "Học lái xe ở Pháp, từng bước an toàn", en: "Learn French driving basics safely", fr: "Apprendre les bases de la conduite en France" },
+  daily: { vi: "Daily Drive 5 phút", en: "5-minute Daily Drive", fr: "Daily Drive 5 minutes" },
+  "practice-maxime": { vi: "Luyện với Maxime", en: "Practice with Maxime", fr: "Practice with Maxime" },
+  progress: { vi: "Tiến bộ của Minh Phương", en: "Minh Phương's Progress", fr: "Progression de Minh Phương" },
+  "before-practice": { vi: "Checklist trước buổi lái", en: "Before Practice Checklist", fr: "Checklist avant séance" },
+  "after-practice": { vi: "Debrief sau buổi lái", en: "After Practice Debrief", fr: "Débrief après séance" },
   legal: { vi: "Pháp lý & an toàn", en: "Legal & Safety", fr: "Légalité & sécurité" },
   driving: { vi: "Các quy tắc lái xe ở Pháp", en: "Driving in France", fr: "Conduite en France" },
   "vietnam-france": { vi: "Khác biệt Việt Nam / Pháp", en: "Vietnam vs France", fr: "Vietnam vs France" },
@@ -48,6 +63,7 @@ function SectionTitle({ title, subtitle }: { title: string; subtitle?: string })
 function App() {
   const [language, setLanguageState] = useState<Language>(() => getInitialLanguage());
   const [active, setActive] = useState<ModuleId>("home");
+  const [progress, setProgress] = useState<LearningProgress>(() => getProgress());
 
   useEffect(() => {
     saveLanguage(language);
@@ -65,7 +81,12 @@ function App() {
 
   return (
     <Layout language={language} active={active} onLanguageChange={setLanguage} onNavigate={navigate}>
-      {active === "home" && <Home language={language} onNavigate={navigate} />}
+      {active === "home" && <Home language={language} progress={progress} onNavigate={navigate} />}
+      {active === "daily" && <DailyDrive language={language} onProgressChange={setProgress} />}
+      {active === "practice-maxime" && <PracticeWithMaxime language={language} onProgressChange={setProgress} />}
+      {active === "progress" && <ProgressPage language={language} progress={progress} onProgressChange={setProgress} />}
+      {active === "before-practice" && <BeforePractice language={language} onNavigate={navigate} />}
+      {active === "after-practice" && <AfterPractice language={language} onProgressChange={setProgress} />}
       {active === "legal" && <Legal language={language} />}
       {active === "driving" && <Driving language={language} />}
       {active === "vietnam-france" && <VietnamFrance language={language} />}
@@ -74,17 +95,21 @@ function App() {
       {active === "automatic" && <Automatic language={language} />}
       {active === "training" && <Training language={language} />}
       {active === "husband" && <Husband language={language} />}
-      {active === "quiz" && <QuizPage language={language} />}
+      {active === "quiz" && <QuizPage language={language} onProgressChange={setProgress} />}
       {active === "printables" && <Printables language={language} />}
       {active === "sources" && <Sources language={language} />}
     </Layout>
   );
 }
 
-function Home({ language, onNavigate }: { language: Language; onNavigate: (id: ModuleId) => void }) {
+function Home({ language, progress, onNavigate }: { language: Language; progress: LearningProgress; onNavigate: (id: ModuleId) => void }) {
   return (
     <div>
-      <section className="grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+      <Dashboard language={language} progress={progress} onNavigate={onNavigate} />
+      <div className="mt-6">
+        <InstallIphoneCard language={language} />
+      </div>
+      <section className="mt-8 grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-center">
         <div>
           <SectionTitle
             title={pageTitles.home[language]}
@@ -360,7 +385,7 @@ function Husband({ language }: { language: Language }) {
   );
 }
 
-function QuizPage({ language }: { language: Language }) {
+function QuizPage({ language, onProgressChange }: { language: Language; onProgressChange: (progress: LearningProgress) => void }) {
   return (
     <div>
       <SectionTitle title={pageTitles.quiz[language]} subtitle={{
@@ -368,7 +393,7 @@ function QuizPage({ language }: { language: Language }) {
         en: "Choose a level or category, answer, read explanations and review mistakes.",
         fr: "Choisir un niveau ou thème, répondre, lire les corrections et revoir les erreurs.",
       }[language]} />
-      <Quiz language={language} />
+      <Quiz language={language} onProgressChange={onProgressChange} />
     </div>
   );
 }
