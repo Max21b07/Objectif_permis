@@ -1,0 +1,560 @@
+import type { DrivingTopic } from "./types";
+
+const t = (
+  id: string,
+  importance: DrivingTopic["importance"],
+  title: DrivingTopic["title"],
+  explanation: DrivingTopic["explanation"],
+  mistake: DrivingTopic["mistake"],
+  example: DrivingTopic["example"],
+  remember: DrivingTopic["remember"],
+): DrivingTopic => ({ id, importance, title, explanation, mistake, example, remember });
+
+export const drivingTopics: DrivingTopic[] = [
+  t(
+    "drive-right",
+    "Vital",
+    { vi: "Lái bên phải", en: "Driving on the right", fr: "Conduite à droite" },
+    {
+      vi: "Ở Pháp, xe chạy bên phải đường. Sau khi vượt, quay lại làn bên phải khi an toàn.",
+      en: "In France, traffic keeps to the right. After overtaking, move back right when safe.",
+      fr: "En France, on roule à droite. Après un dépassement, on se rabat à droite quand c'est sûr.",
+    },
+    {
+      vi: "Ở lâu trên làn trái hoặc giữa khi không vượt.",
+      en: "Staying in the left or middle lane when not overtaking.",
+      fr: "Rester sur la voie de gauche ou du milieu sans dépasser.",
+    },
+    {
+      vi: "Trên đường nhiều làn, nếu làn phải trống, hãy về làn phải.",
+      en: "On a multi-lane road, if the right lane is clear, return to it.",
+      fr: "Sur route à plusieurs voies, si la voie de droite est libre, on s'y rabat.",
+    },
+    { vi: "Bên phải là làn mặc định.", en: "Right is the default lane.", fr: "La droite est la voie normale." },
+  ),
+  t(
+    "speed-limits",
+    "Vital",
+    { vi: "Giới hạn tốc độ", en: "General speed limits", fr: "Limitations de vitesse" },
+    {
+      vi: "Tốc độ phụ thuộc biển báo, thời tiết, loại đường và kinh nghiệm. Quy tắc chung cần kiểm tra trên nguồn chính thức.",
+      en: "Speed depends on signs, weather, road type and driver status. General rules must be checked officially.",
+      fr: "La vitesse dépend des panneaux, de la météo, du type de route et du conducteur. Les règles générales doivent être vérifiées officiellement.",
+    },
+    {
+      vi: "Nghĩ rằng tốc độ ở đâu cũng giống nhau.",
+      en: "Assuming the same speed limit everywhere.",
+      fr: "Penser que la limitation est identique partout.",
+    },
+    {
+      vi: "Trời mưa hoặc lái mới thường có giới hạn thấp hơn trên đường nhanh.",
+      en: "Rain or novice-driver status can mean lower limits on faster roads.",
+      fr: "La pluie ou le statut jeune conducteur peut abaisser certaines limitations.",
+    },
+    { vi: "Biển báo là ưu tiên số một.", en: "The sign is the first rule.", fr: "Le panneau passe en premier." },
+  ),
+  t(
+    "signs",
+    "Vital",
+    { vi: "Biển báo chính", en: "Main road signs", fr: "Panneaux principaux" },
+    {
+      vi: "Học hình dạng trước: tam giác là nguy hiểm, tròn là lệnh hoặc cấm, xanh thường là chỉ dẫn.",
+      en: "Learn shapes first: triangle warns, round signs order or forbid, blue often guides.",
+      fr: "Apprendre les formes : triangle danger, rond obligation/interdiction, bleu souvent indication.",
+    },
+    {
+      vi: "Nhìn biển quá muộn.",
+      en: "Reading signs too late.",
+      fr: "Lire les panneaux trop tard.",
+    },
+    {
+      vi: "Biển STOP bắt buộc dừng hẳn, không chỉ đi chậm.",
+      en: "A STOP sign means a complete stop, not just slowing down.",
+      fr: "Un STOP impose l'arrêt complet, pas seulement ralentir.",
+    },
+    { vi: "Nhìn xa để thấy biển sớm.", en: "Look far to see signs early.", fr: "Regarder loin pour lire tôt." },
+  ),
+  t(
+    "road-markings",
+    "Important",
+    { vi: "Vạch kẻ đường", en: "Road markings", fr: "Marquages au sol" },
+    {
+      vi: "Vạch liền thường không được cắt. Vạch đứt cho phép đổi làn nếu an toàn và được phép.",
+      en: "A solid line usually cannot be crossed. A broken line allows lane changes if safe and legal.",
+      fr: "Une ligne continue ne se franchit généralement pas. Une ligne discontinue permet de changer si c'est sûr et autorisé.",
+    },
+    {
+      vi: "Chỉ nhìn xe, quên nhìn vạch.",
+      en: "Watching cars but ignoring markings.",
+      fr: "Regarder les voitures mais oublier le marquage.",
+    },
+    {
+      vi: "Trước khi đổi làn: gương, clignotant, góc chết, rồi di chuyển nhẹ.",
+      en: "Before changing lane: mirror, indicator, blind spot, then move smoothly.",
+      fr: "Avant de changer de voie : miroir, clignotant, angle mort, puis déplacement doux.",
+    },
+    { vi: "Vạch trên đường cũng là luật.", en: "Road markings are rules too.", fr: "Le marquage fait partie des règles." },
+  ),
+  t(
+    "traffic-lights",
+    "Vital",
+    { vi: "Đèn giao thông", en: "Traffic lights", fr: "Feux tricolores" },
+    {
+      vi: "Đèn đỏ dừng. Đèn vàng dừng nếu có thể an toàn. Đèn xanh đi nhưng vẫn quan sát.",
+      en: "Red means stop. Amber means stop if safe. Green means go with caution.",
+      fr: "Rouge : arrêt. Orange : arrêt si possible sans danger. Vert : passer avec prudence.",
+    },
+    {
+      vi: "Tăng tốc khi đèn vàng mà không kiểm tra nguy hiểm.",
+      en: "Accelerating at amber without checking risk.",
+      fr: "Accélérer à l'orange sans évaluer le danger.",
+    },
+    {
+      vi: "Khi đèn xanh, vẫn nhường người đi bộ đang qua đường.",
+      en: "On green, still yield to pedestrians already crossing.",
+      fr: "Au vert, on laisse quand même finir les piétons engagés.",
+    },
+    { vi: "Xanh không có nghĩa là không cần nhìn.", en: "Green does not mean stop looking.", fr: "Vert ne veut pas dire sans contrôle." },
+  ),
+  t(
+    "pedestrians",
+    "Vital",
+    { vi: "Vạch qua đường", en: "Pedestrian crossings", fr: "Passages piétons" },
+    {
+      vi: "Người đi bộ được bảo vệ rất mạnh. Nếu họ muốn qua đường tại vạch, phải nhường.",
+      en: "Pedestrians are strongly protected. If they clearly intend to cross at a crossing, yield.",
+      fr: "Les piétons sont très protégés. S'ils manifestent l'intention de traverser au passage, on cède.",
+    },
+    {
+      vi: "Đi qua vạch vì nghĩ người đi bộ còn xa.",
+      en: "Driving through because the pedestrian seems far.",
+      fr: "Passer parce que le piéton semble encore loin.",
+    },
+    {
+      vi: "Gần trường học, giảm tốc và chuẩn bị dừng.",
+      en: "Near a school, slow down and be ready to stop.",
+      fr: "Près d'une école, ralentir et se préparer à s'arrêter.",
+    },
+    { vi: "Thấy người đi bộ: chuẩn bị phanh.", en: "See a pedestrian: prepare to brake.", fr: "Piéton vu : pied prêt à freiner." },
+  ),
+  t(
+    "priority-right",
+    "Vital",
+    { vi: "Ưu tiên bên phải", en: "Priority to the right", fr: "Priorité à droite" },
+    {
+      vi: "Nếu không có biển hoặc đèn khác, xe từ bên phải có thể được ưu tiên. Hãy chậm và kiểm tra.",
+      en: "Without signs or lights saying otherwise, traffic from the right may have priority. Slow down and check.",
+      fr: "Sans panneau ou feu contraire, un véhicule venant de droite peut être prioritaire. Ralentir et contrôler.",
+    },
+    {
+      vi: "Nghĩ đường thẳng luôn có quyền ưu tiên.",
+      en: "Thinking the straight road always has priority.",
+      fr: "Croire que la route tout droit est toujours prioritaire.",
+    },
+    {
+      vi: "Trong khu dân cư nhỏ, nhìn sang phải trước mỗi ngã tư.",
+      en: "In residential streets, check right before every junction.",
+      fr: "En quartier résidentiel, contrôler à droite avant chaque intersection.",
+    },
+    { vi: "Không chắc? Chậm lại.", en: "Not sure? Slow down.", fr: "Pas sûr ? On ralentit." },
+  ),
+  t(
+    "stop",
+    "Vital",
+    { vi: "STOP", en: "Stop sign", fr: "Stop" },
+    {
+      vi: "STOP nghĩa là dừng hoàn toàn tại vạch, quan sát, rồi đi khi an toàn.",
+      en: "STOP means complete stop at the line, observe, then go when safe.",
+      fr: "STOP signifie arrêt complet à la ligne, observation, puis départ si c'est sûr.",
+    },
+    {
+      vi: "Lăn bánh chậm nhưng không dừng hẳn.",
+      en: "Rolling slowly without a full stop.",
+      fr: "Rouler lentement sans arrêt complet.",
+    },
+    {
+      vi: "Đếm một giây sau khi xe đứng yên hoàn toàn.",
+      en: "Count one second once the car is fully stopped.",
+      fr: "Compter une seconde quand la voiture est immobilisée.",
+    },
+    { vi: "STOP = bánh xe đứng yên.", en: "STOP = wheels still.", fr: "STOP = roues immobiles." },
+  ),
+  t(
+    "yield",
+    "Vital",
+    { vi: "Nhường đường", en: "Give way", fr: "Cédez-le-passage" },
+    {
+      vi: "Không luôn phải dừng, nhưng phải nhường xe hoặc người có ưu tiên.",
+      en: "You do not always stop, but you must yield to traffic with priority.",
+      fr: "On ne s'arrête pas toujours, mais on cède aux usagers prioritaires.",
+    },
+    {
+      vi: "Vào quá nhanh và làm xe khác phải phanh.",
+      en: "Entering too fast and forcing another driver to brake.",
+      fr: "S'engager trop vite et obliger un autre à freiner.",
+    },
+    {
+      vi: "Trước vòng xuyến, thường phải nhường xe đã ở trong vòng.",
+      en: "Before a roundabout, usually yield to vehicles already inside.",
+      fr: "Avant un giratoire, on cède généralement aux véhicules déjà engagés.",
+    },
+    { vi: "Không ép người có ưu tiên.", en: "Never force priority traffic.", fr: "Ne jamais forcer la priorité." },
+  ),
+  t(
+    "roundabouts",
+    "Vital",
+    { vi: "Vòng xuyến", en: "Roundabouts", fr: "Ronds-points / giratoires" },
+    {
+      vi: "Giảm tốc trước khi vào, nhường xe đang trong vòng nếu có biển, chọn làn sớm và bật xi-nhan khi ra.",
+      en: "Slow before entering, yield if signed, choose lane early and indicate when exiting.",
+      fr: "Ralentir avant d'entrer, céder si indiqué, choisir sa voie tôt et clignoter pour sortir.",
+    },
+    {
+      vi: "Quên xi-nhan khi ra hoặc cắt làn đột ngột.",
+      en: "Forgetting to indicate on exit or cutting lanes suddenly.",
+      fr: "Oublier le clignotant de sortie ou couper une voie.",
+    },
+    {
+      vi: "Nếu không chắc lối ra, đi thêm một vòng trong điều kiện an toàn.",
+      en: "If unsure about the exit, go around again when safe.",
+      fr: "Si la sortie n'est pas sûre, refaire un tour si possible.",
+    },
+    { vi: "Vào chậm, ra rõ ràng.", en: "Enter slowly, exit clearly.", fr: "Entrer lentement, sortir clairement." },
+  ),
+  t(
+    "zone-30",
+    "Important",
+    { vi: "Khu vực 30", en: "30 km/h zones", fr: "Zones 30" },
+    {
+      vi: "Khu 30 thường có người đi bộ, xe đạp, đường hẹp. Lái chậm và nhìn hai bên.",
+      en: "30 zones often have pedestrians, bikes and narrow streets. Drive slowly and scan both sides.",
+      fr: "Les zones 30 ont souvent piétons, vélos et rues étroites. Conduire lentement et balayer du regard.",
+    },
+    {
+      vi: "Giữ 50 km/h vì đường trông rộng.",
+      en: "Keeping 50 km/h because the street looks wide.",
+      fr: "Rester à 50 km/h parce que la rue semble large.",
+    },
+    {
+      vi: "Trong trung tâm thành phố, kiểm tra biển khu 30 ở đầu khu.",
+      en: "In city centers, watch for 30-zone signs at the entrance.",
+      fr: "En centre-ville, repérer les panneaux de zone 30 à l'entrée.",
+    },
+    { vi: "Khu 30: bình tĩnh và chậm.", en: "30 zone: calm and slow.", fr: "Zone 30 : calme et lent." },
+  ),
+  t(
+    "shared-zone",
+    "Important",
+    { vi: "Khu gặp gỡ", en: "Shared zones", fr: "Zones de rencontre" },
+    {
+      vi: "Người đi bộ có thể đi trên đường. Xe phải đi rất chậm và nhường.",
+      en: "Pedestrians may use the roadway. Cars must move very slowly and yield.",
+      fr: "Les piétons peuvent circuler sur la chaussée. La voiture roule très lentement et cède.",
+    },
+    {
+      vi: "Xem như đường bình thường.",
+      en: "Treating it like a normal road.",
+      fr: "La traiter comme une rue normale.",
+    },
+    {
+      vi: "Gần quán cà phê hoặc phố nhỏ, sẵn sàng dừng.",
+      en: "Near cafes or small streets, be ready to stop.",
+      fr: "Près des commerces et petites rues, se préparer à s'arrêter.",
+    },
+    { vi: "Người đi bộ là ưu tiên.", en: "Pedestrians first.", fr: "Le piéton d'abord." },
+  ),
+  t(
+    "bus-lanes",
+    "Important",
+    { vi: "Làn xe buýt", en: "Bus lanes", fr: "Voies de bus" },
+    {
+      vi: "Làn xe buýt thường dành riêng cho bus, taxi hoặc xe được phép. Đọc biển trước khi vào.",
+      en: "Bus lanes are usually reserved for buses, taxis or authorized vehicles. Read signs before entering.",
+      fr: "Les voies de bus sont souvent réservées aux bus, taxis ou véhicules autorisés. Lire les panneaux.",
+    },
+    {
+      vi: "Dùng làn bus để tránh tắc đường.",
+      en: "Using the bus lane to avoid traffic.",
+      fr: "Prendre la voie bus pour éviter un bouchon.",
+    },
+    {
+      vi: "Nếu cần rẽ phải, chỉ vào phần được phép và kiểm tra xe đạp.",
+      en: "If turning right, enter only where allowed and check cyclists.",
+      fr: "Pour tourner à droite, n'entrer que si autorisé et contrôler les cyclistes.",
+    },
+    { vi: "Không chắc được phép? Không vào.", en: "Not sure it is allowed? Stay out.", fr: "Pas sûr d'être autorisé ? Ne pas entrer." },
+  ),
+  t(
+    "bike-lanes",
+    "Vital",
+    { vi: "Làn xe đạp", en: "Cycle lanes", fr: "Pistes cyclables" },
+    {
+      vi: "Xe đạp và trottinette có thể ở bên phải hoặc trong làn riêng. Luôn kiểm tra trước khi rẽ.",
+      en: "Bikes and scooters may be on the right or in dedicated lanes. Always check before turning.",
+      fr: "Vélos et trottinettes peuvent être à droite ou sur une piste. Toujours contrôler avant de tourner.",
+    },
+    {
+      vi: "Rẽ phải mà không nhìn gương và góc chết.",
+      en: "Turning right without mirror and blind-spot checks.",
+      fr: "Tourner à droite sans miroir ni angle mort.",
+    },
+    {
+      vi: "Trước khi mở cửa hoặc rẽ, nhìn bên phải.",
+      en: "Before opening a door or turning, check the right side.",
+      fr: "Avant d'ouvrir ou de tourner, contrôler à droite.",
+    },
+    { vi: "Xe đạp nhỏ nhưng nguy cơ lớn.", en: "Small bike, big risk.", fr: "Petit vélo, grand risque." },
+  ),
+  t(
+    "parking",
+    "Important",
+    { vi: "Đỗ xe", en: "Parking", fr: "Stationnement" },
+    {
+      vi: "Chỉ đỗ nơi được phép, kiểm tra biển, vạch màu, thời gian và thanh toán nếu cần.",
+      en: "Park only where allowed, checking signs, colored markings, times and payment rules.",
+      fr: "Stationner seulement où c'est autorisé, en vérifiant panneaux, marquages, horaires et paiement.",
+    },
+    {
+      vi: "Đỗ trên vỉa hè hoặc trước lối ra vào.",
+      en: "Parking on the pavement or in front of an entrance.",
+      fr: "Stationner sur trottoir ou devant une entrée.",
+    },
+    {
+      vi: "Sau khi đỗ, kiểm tra xe không cản người đi bộ, xe đạp hoặc xe cứu hộ.",
+      en: "After parking, check the car does not block pedestrians, bikes or emergency access.",
+      fr: "Après stationnement, vérifier que rien n'est bloqué.",
+    },
+    { vi: "Đỗ xe cũng là một quy tắc an toàn.", en: "Parking is also a safety rule.", fr: "Stationner, c'est aussi respecter la sécurité." },
+  ),
+  t(
+    "overtaking",
+    "Important",
+    { vi: "Vượt xe", en: "Overtaking", fr: "Dépassement" },
+    {
+      vi: "Chỉ vượt khi được phép, thấy đủ xa, có khoảng trống và không làm ai phanh.",
+      en: "Overtake only when allowed, visible, spacious and without forcing anyone to brake.",
+      fr: "Dépasser seulement si c'est autorisé, visible, avec espace, sans forcer personne.",
+    },
+    {
+      vi: "Vượt vì người trước đi chậm nhưng không đủ tầm nhìn.",
+      en: "Overtaking because the car ahead is slow without enough visibility.",
+      fr: "Dépasser un véhicule lent sans visibilité suffisante.",
+    },
+    {
+      vi: "Khi vượt xe đạp, giữ khoảng cách an toàn.",
+      en: "When passing a cyclist, keep a safe lateral distance.",
+      fr: "Pour doubler un cycliste, garder un écart latéral sûr.",
+    },
+    { vi: "Nếu nghi ngờ, không vượt.", en: "If in doubt, do not overtake.", fr: "En cas de doute, pas de dépassement." },
+  ),
+  t(
+    "merging",
+    "Important",
+    { vi: "Nhập làn", en: "Merging", fr: "Insertion" },
+    {
+      vi: "Dùng làn tăng tốc để đạt tốc độ phù hợp, quan sát sớm và nhập khi có khoảng trống.",
+      en: "Use the acceleration lane to reach a suitable speed, look early and merge into a gap.",
+      fr: "Utiliser la voie d'accélération, observer tôt et s'insérer dans un espace.",
+    },
+    {
+      vi: "Dừng ở cuối làn nhập khi không cần thiết.",
+      en: "Stopping at the end of the merge lane when not necessary.",
+      fr: "S'arrêter en fin de voie d'insertion sans nécessité.",
+    },
+    {
+      vi: "Bật clignotant, nhìn gương, góc chết, rồi nhập nhẹ.",
+      en: "Indicate, mirror, blind spot, then merge smoothly.",
+      fr: "Clignotant, miroir, angle mort, puis insertion progressive.",
+    },
+    { vi: "Chuẩn bị nhập làn từ sớm.", en: "Prepare the merge early.", fr: "Préparer l'insertion tôt." },
+  ),
+  t(
+    "lane-change",
+    "Vital",
+    { vi: "Đổi làn", en: "Changing lane", fr: "Changement de voie" },
+    {
+      vi: "Quy trình đơn giản: gương, clignotant, góc chết, chuyển hướng nhẹ, giữ tốc độ ổn định.",
+      en: "Simple sequence: mirror, indicator, blind spot, smooth movement, steady speed.",
+      fr: "Séquence simple : miroir, clignotant, angle mort, mouvement doux, vitesse stable.",
+    },
+    {
+      vi: "Bật clignotant rồi chuyển ngay.",
+      en: "Indicating and moving immediately.",
+      fr: "Mettre le clignotant puis se déporter tout de suite.",
+    },
+    {
+      vi: "Nếu xe sau đang tăng tốc, chờ khoảng trống khác.",
+      en: "If the rear car is accelerating, wait for another gap.",
+      fr: "Si la voiture derrière accélère, attendre un autre espace.",
+    },
+    { vi: "Clignotant không tạo quyền ưu tiên.", en: "An indicator does not give priority.", fr: "Le clignotant ne donne pas priorité." },
+  ),
+  t(
+    "following-distance",
+    "Vital",
+    { vi: "Khoảng cách an toàn", en: "Safety distance", fr: "Distance de sécurité" },
+    {
+      vi: "Giữ ít nhất khoảng hai giây với xe trước trong điều kiện bình thường, nhiều hơn khi mưa.",
+      en: "Keep at least about two seconds from the car ahead in normal conditions, more in rain.",
+      fr: "Garder au moins environ deux secondes avec le véhicule devant, plus sous la pluie.",
+    },
+    {
+      vi: "Bám sát vì sợ xe khác chen vào.",
+      en: "Tailgating because another car might enter the gap.",
+      fr: "Coller par peur qu'un véhicule s'insère.",
+    },
+    {
+      vi: "Chọn một cột mốc; xe trước đi qua, đếm hai giây.",
+      en: "Pick a marker; when the car ahead passes it, count two seconds.",
+      fr: "Choisir un repère ; quand l'autre passe, compter deux secondes.",
+    },
+    { vi: "Khoảng cách là thời gian để sống.", en: "Distance gives time to live.", fr: "La distance donne du temps." },
+  ),
+  t(
+    "rain",
+    "Important",
+    { vi: "Lái xe khi mưa", en: "Driving in rain", fr: "Conduite sous la pluie" },
+    {
+      vi: "Giảm tốc, tăng khoảng cách, bật đèn nếu tầm nhìn kém và phanh nhẹ hơn.",
+      en: "Slow down, increase distance, use lights if visibility is poor and brake more gently.",
+      fr: "Réduire la vitesse, augmenter les distances, allumer les feux si visibilité réduite et freiner plus doux.",
+    },
+    {
+      vi: "Giữ thói quen phanh và đánh lái như lúc đường khô.",
+      en: "Braking and steering as if the road were dry.",
+      fr: "Freiner et tourner comme sur route sèche.",
+    },
+    {
+      vi: "Nếu nước đọng, tránh đánh lái hoặc phanh mạnh.",
+      en: "On standing water, avoid sudden steering or hard braking.",
+      fr: "Sur eau stagnante, éviter freinage et volant brusques.",
+    },
+    { vi: "Mưa = chậm hơn, xa hơn.", en: "Rain = slower and farther.", fr: "Pluie = moins vite, plus loin." },
+  ),
+  t(
+    "city",
+    "Important",
+    { vi: "Lái trong thành phố", en: "City driving", fr: "Conduite en ville" },
+    {
+      vi: "Thành phố có nhiều bất ngờ: người đi bộ, xe đạp, xe buýt, cửa xe mở. Đi chậm và nhìn xa.",
+      en: "Cities bring surprises: pedestrians, bikes, buses, doors opening. Drive slowly and look far.",
+      fr: "La ville apporte piétons, vélos, bus, portières. Rouler calmement et regarder loin.",
+    },
+    {
+      vi: "Chỉ nhìn xe ngay trước mặt.",
+      en: "Looking only at the car directly ahead.",
+      fr: "Regarder seulement la voiture devant.",
+    },
+    {
+      vi: "Ở phố hẹp, chuẩn bị dừng trước khi thấy nguy hiểm quá gần.",
+      en: "In narrow streets, prepare to stop before danger is too close.",
+      fr: "Dans les rues étroites, préparer l'arrêt avant que le danger soit proche.",
+    },
+    { vi: "Trong phố: chậm, rộng mắt, bình tĩnh.", en: "In town: slow, wide eyes, calm.", fr: "En ville : lent, large regard, calme." },
+  ),
+  t(
+    "blind-spots",
+    "Vital",
+    { vi: "Góc chết", en: "Blind spots", fr: "Angles morts" },
+    {
+      vi: "Gương không thấy hết. Trước khi rẽ hoặc đổi làn, quay đầu nhanh để kiểm tra vùng bên cạnh.",
+      en: "Mirrors do not show everything. Before turning or changing lane, make a quick shoulder check.",
+      fr: "Les miroirs ne montrent pas tout. Avant de tourner ou changer de voie, contrôler l'angle mort.",
+    },
+    {
+      vi: "Tin hoàn toàn vào camera hoặc gương.",
+      en: "Trusting mirrors or cameras completely.",
+      fr: "Faire totalement confiance aux miroirs ou caméras.",
+    },
+    {
+      vi: "Trước khi rẽ phải, kiểm tra xe đạp trong góc chết bên phải.",
+      en: "Before turning right, check for a bike in the right blind spot.",
+      fr: "Avant de tourner à droite, contrôler un vélo dans l'angle mort droit.",
+    },
+    { vi: "Gương, rồi góc chết.", en: "Mirror, then blind spot.", fr: "Miroir, puis angle mort." },
+  ),
+  t(
+    "indicators",
+    "Vital",
+    { vi: "Xi-nhan", en: "Indicators", fr: "Clignotants" },
+    {
+      vi: "Xi-nhan báo ý định cho người khác. Bật sớm nhưng không quá sớm gây hiểu nhầm.",
+      en: "Indicators communicate intention. Use them early but not so early that they confuse.",
+      fr: "Le clignotant annonce l'intention. Le mettre assez tôt, sans créer de confusion.",
+    },
+    {
+      vi: "Chỉ bật khi đã bắt đầu rẽ.",
+      en: "Indicating only after starting to turn.",
+      fr: "Le mettre seulement après avoir commencé à tourner.",
+    },
+    {
+      vi: "Khi ra khỏi vòng xuyến, bật xi-nhan phải trước lối ra.",
+      en: "When leaving a roundabout, indicate right before the exit.",
+      fr: "Pour sortir d'un giratoire, clignotant droit avant la sortie.",
+    },
+    { vi: "Báo trước, rồi hành động.", en: "Signal first, then act.", fr: "Annoncer, puis agir." },
+  ),
+  t(
+    "bikes-scooters",
+    "Vital",
+    { vi: "Gần xe đạp và trottinette", en: "Near bikes and scooters", fr: "Près des vélos et trottinettes" },
+    {
+      vi: "Họ có thể đổi hướng nhanh, đi trong góc chết hoặc đi ngược chiều nơi được phép. Giữ khoảng cách.",
+      en: "They can move quickly, sit in blind spots or ride contraflow where allowed. Keep distance.",
+      fr: "Ils peuvent changer vite, être en angle mort ou circuler à contresens autorisé. Garder distance.",
+    },
+    {
+      vi: "Vượt quá gần hoặc rẽ cắt đầu.",
+      en: "Passing too close or cutting across them.",
+      fr: "Doubler trop près ou couper leur trajectoire.",
+    },
+    {
+      vi: "Trước khi ouvrir la portière, dùng méthode hollandaise: mở bằng tay xa cửa để quay người nhìn.",
+      en: "Before opening the door, use the Dutch reach to turn and look.",
+      fr: "Avant d'ouvrir, utiliser l'ouverture hollandaise pour regarder.",
+    },
+    { vi: "Xe đạp có thể ở bất cứ bên nào.", en: "A bike can be on either side.", fr: "Un vélo peut être de chaque côté." },
+  ),
+  t(
+    "anticipation",
+    "Vital",
+    { vi: "Dự đoán", en: "Anticipation", fr: "Anticipation" },
+    {
+      vi: "Nhìn xa, đọc biển, quan sát vỉa hè và đoán điều gì có thể xảy ra trong vài giây tới.",
+      en: "Look far, read signs, scan pavements and predict what may happen in the next seconds.",
+      fr: "Regarder loin, lire les panneaux, balayer les trottoirs et prévoir les prochaines secondes.",
+    },
+    {
+      vi: "Phản ứng vào phút cuối.",
+      en: "Reacting at the last second.",
+      fr: "Réagir au dernier moment.",
+    },
+    {
+      vi: "Thấy bóng trẻ em gần xe đỗ: giảm tốc trước.",
+      en: "See children near parked cars: slow down before anything happens.",
+      fr: "Voir des enfants près de voitures garées : ralentir avant.",
+    },
+    { vi: "Người lái tốt thấy sớm.", en: "A good driver sees early.", fr: "Un bon conducteur voit tôt." },
+  ),
+  t(
+    "defensive",
+    "Vital",
+    { vi: "Lái phòng thủ", en: "Defensive driving", fr: "Conduite défensive" },
+    {
+      vi: "Không cố chứng minh mình đúng. Mục tiêu là tránh tai nạn, giữ khoảng trống và bình tĩnh.",
+      en: "Do not try to prove you are right. The goal is to avoid crashes, keep space and stay calm.",
+      fr: "Ne pas chercher à prouver qu'on a raison. Le but est d'éviter l'accident, garder l'espace et rester calme.",
+    },
+    {
+      vi: "Giành quyền ưu tiên dù người khác đang làm sai.",
+      en: "Forcing your priority when someone else is already making a mistake.",
+      fr: "Forcer sa priorité quand l'autre commet déjà une erreur.",
+    },
+    {
+      vi: "Nếu xe khác chen vào, giảm nhẹ và giữ an toàn.",
+      en: "If another car cuts in, ease off and keep safe.",
+      fr: "Si un véhicule force, lever le pied et rester en sécurité.",
+    },
+    { vi: "An toàn quan trọng hơn đúng.", en: "Safe is better than right.", fr: "Être en sécurité vaut mieux qu'avoir raison." },
+  ),
+];
