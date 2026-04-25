@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { badges } from "../data/badges";
 import { commands } from "../data/commands";
-import { actionButtons, audioActions } from "../data/audioActions";
+import { actionButtons, audioActions, getMaximeFrenchAudio } from "../data/audioActions";
 import { miniScenarios } from "../data/scenarios";
 import type { CommandItem, MiniScenario, ModuleId, QuizQuestion, VocabularyItem } from "../data/types";
 import { quizQuestions } from "../data/quiz";
 import { vocabulary } from "../data/vocabulary";
 import { ui } from "../locales/translations";
 import type { Language } from "../locales/types";
-import { playAudioOrSpeak, speak } from "../utils/audio";
+import { playAudioOrSpeak } from "../utils/audio";
 import {
   getProgress,
   progressPercent,
@@ -51,6 +51,7 @@ export function Dashboard({
   const percent = progressPercent(progress);
   const quickLinks: Array<{ id: ModuleId; label: string; icon: string }> = [
     { id: "daily", label: ui.dailyDrive[language], icon: "⚡" },
+    { id: "swipe-cards", label: ui.swipeCards[language], icon: "🎴" },
     { id: "commands", label: "Flashcards", icon: "🃏" },
     { id: "quiz", label: "Quiz", icon: "✅" },
     { id: "practice-maxime", label: ui.practiceMaxime[language], icon: "🗣️" },
@@ -219,6 +220,194 @@ function Metric({ label, value, suffix = "" }: { label: string; value: string; s
   );
 }
 
+type SwipeCard = {
+  id: string;
+  question: QuizQuestion["question"];
+  answers: [QuizQuestion["answers"][number], QuizQuestion["answers"][number]];
+  correctIndex: 0 | 1;
+  explanation: QuizQuestion["explanation"];
+  category: string;
+};
+
+function buildSwipeCards(): SwipeCard[] {
+  return quizQuestions.slice(0, 24).map((question) => {
+    const correctAnswer = question.answers[question.correctIndex];
+    const wrongAnswer = question.answers.find((_, index) => index !== question.correctIndex) ?? question.answers[0];
+    return {
+      id: `swipe-${question.id}`,
+      question: question.question,
+      answers: [correctAnswer, wrongAnswer],
+      correctIndex: 0,
+      explanation: question.explanation,
+      category: question.category,
+    };
+  });
+}
+
+export function SwipeCards({ language, onProgressChange }: { language: Language; onProgressChange: (progress: LearningProgress) => void }) {
+  const cards = buildSwipeCards();
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selected, setSelected] = useState<0 | 1 | null>(null);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
+  const [drag, setDrag] = useState({ x: 0, y: 0 });
+  const current = cards[index];
+  const done = index >= cards.length;
+
+  function finish(finalScore: number) {
+    const progress = getProgress();
+    saveAndEmit(
+      recordSession(
+        { ...progress, moduleProgress: { ...progress.moduleProgress, Priority: Math.min(100, progress.moduleProgress.Priority + 8) } },
+        { id: cryptoId(), date: todayIso(), type: "quiz", score: finalScore, categories: ["Swipe Cards", "Priority"] },
+      ),
+      onProgressChange,
+    );
+  }
+
+  function choose(answerIndex: 0 | 1) {
+    if (selected !== null || done) return;
+    setSelected(answerIndex);
+    setShowExplanation(true);
+    if (answerIndex === current.correctIndex) setScore((value) => value + 1);
+  }
+
+  function next() {
+    if (done) return;
+    if (index >= cards.length - 1) {
+      const final = Math.round((score / cards.length) * 100);
+      finish(final);
+      setIndex((value) => value + 1);
+      return;
+    }
+    setIndex((value) => value + 1);
+    setSelected(null);
+    setShowExplanation(false);
+    setDrag({ x: 0, y: 0 });
+  }
+
+  function reset() {
+    setIndex(0);
+    setScore(0);
+    setSelected(null);
+    setShowExplanation(false);
+    setDrag({ x: 0, y: 0 });
+  }
+
+  function handleSwipe(deltaX: number, deltaY: number) {
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+    if (absX < 70 && absY < 70) return;
+    if (absX > absY) {
+      choose(deltaX < 0 ? 0 : 1);
+      return;
+    }
+    if (deltaY < 0 && selected !== null) next();
+    if (deltaY > 0) setShowExplanation(true);
+  }
+
+  if (done) {
+    const final = Math.round((score / cards.length) * 100);
+    return (
+      <section className={cardClass("text-center")}>
+        <p className="text-5xl">🎴</p>
+        <h1 className="mt-3 font-display text-4xl font-bold">{ui.swipeCards[language]}</h1>
+        <p className="mt-3 text-3xl font-extrabold">{ui.score[language]}: {final}%</p>
+        <p className="mx-auto mt-3 max-w-lg leading-7 text-ink/70">{ui.encouragement[language]}</p>
+        <button type="button" onClick={reset} className="focus-ring mt-5 rounded-3xl bg-moss px-6 py-4 font-extrabold text-white">
+          {ui.anotherQuickSession[language]}
+        </button>
+      </section>
+    );
+  }
+
+  const cardStyle = {
+    transform: `translate(${drag.x}px, ${drag.y}px) rotate(${drag.x / 28}deg)`,
+  };
+
+  return (
+    <section className="grid gap-5">
+      <SafetyWarning language={language} compact />
+      <div className={cardClass()}>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h1 className="font-display text-4xl font-bold">{ui.swipeCards[language]}</h1>
+            <p className="mt-2 max-w-2xl leading-7 text-ink/70">{ui.swipeCardsSubtitle[language]}</p>
+          </div>
+          <ProgressBadge value={`${index + 1}/${cards.length}`} />
+        </div>
+        <p className="mt-4 rounded-2xl bg-skysoft p-3 text-sm font-bold text-moss">{ui.swipeUpDown[language]}</p>
+
+        <div className="relative mt-5 min-h-[28rem] overflow-hidden rounded-[2rem] bg-moss/10 p-3">
+          <div
+            role="group"
+            aria-label={current.question[language]}
+            className="touch-none select-none rounded-[2rem] bg-white p-5 shadow-soft ring-1 ring-moss/10 transition-transform"
+            style={cardStyle}
+            onPointerDown={(event) => {
+              event.currentTarget.setPointerCapture(event.pointerId);
+              setDragStart({ x: event.clientX, y: event.clientY });
+            }}
+            onPointerMove={(event) => {
+              if (!dragStart || selected !== null) return;
+              setDrag({ x: event.clientX - dragStart.x, y: event.clientY - dragStart.y });
+            }}
+            onPointerUp={(event) => {
+              if (!dragStart) return;
+              const deltaX = event.clientX - dragStart.x;
+              const deltaY = event.clientY - dragStart.y;
+              setDragStart(null);
+              setDrag({ x: 0, y: 0 });
+              handleSwipe(deltaX, deltaY);
+            }}
+          >
+            <p className="rounded-full bg-cream px-3 py-2 text-center text-sm font-extrabold text-moss">{current.category}</p>
+            <h2 className="mt-5 font-display text-3xl font-bold leading-tight md:text-5xl">{current.question[language]}</h2>
+            <div className="mt-7 grid grid-cols-2 gap-3">
+              {current.answers.map((answer, answerIndex) => {
+                const typedIndex = answerIndex as 0 | 1;
+                const isSelected = selected === typedIndex;
+                const isCorrect = current.correctIndex === typedIndex;
+                const state = selected === null ? "bg-cream" : isCorrect ? "bg-mint text-moss" : isSelected ? "bg-rosewash text-clay" : "bg-cream opacity-70";
+                return (
+                  <button
+                    key={answer.en}
+                    type="button"
+                    onClick={() => choose(typedIndex)}
+                    className={`focus-ring min-h-36 rounded-3xl p-4 text-left font-extrabold ${state}`}
+                  >
+                    <span className="block text-xs uppercase tracking-[0.18em] text-ink/50">{typedIndex === 0 ? ui.swipeLeft[language] : ui.swipeRight[language]}</span>
+                    <span className="mt-3 block text-xl">{answer[language]}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {showExplanation && (
+              <div className="mt-5 rounded-2xl bg-skysoft p-4">
+                <p className="font-extrabold">{selected === current.correctIndex ? ui.correct[language] : ui.reviewThis[language]}</p>
+                <p className="mt-1 text-sm leading-6 text-ink/75">{current.explanation[language]}</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <button type="button" onClick={() => choose(0)} disabled={selected !== null} className="focus-ring rounded-3xl bg-cream px-5 py-4 font-extrabold text-moss disabled:opacity-60">
+            {ui.swipeLeft[language]}
+          </button>
+          <button type="button" onClick={() => choose(1)} disabled={selected !== null} className="focus-ring rounded-3xl bg-cream px-5 py-4 font-extrabold text-moss disabled:opacity-60">
+            {ui.swipeRight[language]}
+          </button>
+        </div>
+        <button type="button" onClick={next} disabled={selected === null} className="focus-ring mt-3 w-full rounded-3xl bg-clay px-5 py-4 font-extrabold text-white disabled:opacity-45">
+          {ui.next[language]}
+        </button>
+      </div>
+    </section>
+  );
+}
+
 export function DailyDrive({ language, onProgressChange }: { language: Language; onProgressChange: (progress: LearningProgress) => void }) {
   const progress = getProgress();
   const offset = progress.dailySessionsCompleted;
@@ -317,7 +506,7 @@ function CommandStep({ commands: items, language }: { commands: CommandItem[]; l
           <div key={item.french} className="rounded-2xl bg-moss p-4 text-white">
             <p className="text-2xl font-extrabold">{item.french}</p>
             <p className="mt-1 text-white/80">{item.english} · {item.vietnamese}</p>
-            <button type="button" onClick={() => speak(item.french, "fr")} className="focus-ring mt-3 rounded-full bg-white px-4 py-2 text-sm font-extrabold text-moss">
+            <button type="button" onClick={() => playAudioOrSpeak(getMaximeFrenchAudio(item.french), item.french, "fr")} className="focus-ring mt-3 rounded-full bg-white px-4 py-2 text-sm font-extrabold text-moss">
               {ui.listenFrench[language]}
             </button>
           </div>
@@ -407,7 +596,7 @@ export function PracticeWithMaxime({ language, onProgressChange }: { language: L
       <div className="mt-5 rounded-3xl bg-moss p-6 text-center text-white">
         <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-mint">Maxime says</p>
         <p className="mt-3 font-display text-5xl font-bold">{current.french}</p>
-        <button type="button" onClick={() => speak(current.french, "fr")} className="focus-ring mt-5 rounded-full bg-white px-5 py-3 font-extrabold text-moss">
+        <button type="button" onClick={() => playAudioOrSpeak(getMaximeFrenchAudio(current.french), current.french, "fr")} className="focus-ring mt-5 rounded-full bg-white px-5 py-3 font-extrabold text-moss">
           {ui.listenFrench[language]}
         </button>
       </div>

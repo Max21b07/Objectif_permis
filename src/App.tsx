@@ -30,11 +30,13 @@ import {
   InstallIphoneCard,
   PracticeWithMaxime,
   ProgressPage,
+  SwipeCards,
 } from "./components/LearningHub";
 
 const pageTitles: Record<ModuleId, LocalizedString> = {
   home: { vi: "Học lái xe ở Pháp, từng bước an toàn", en: "Learn French driving basics safely", fr: "Apprendre les bases de la conduite en France" },
   daily: { vi: "Daily Drive 5 phút", en: "5-minute Daily Drive", fr: "Daily Drive 5 minutes" },
+  "swipe-cards": { vi: "Swipe Cards", en: "Swipe Cards", fr: "Swipe Cards" },
   "practice-maxime": { vi: "Luyện với Maxime", en: "Practice with Maxime", fr: "Practice with Maxime" },
   "audio-game": { vi: "Nghe Maxime & bấm đúng", en: "Listen to Maxime & tap", fr: "Écoute Maxime & touche" },
   progress: { vi: "Tiến bộ của Minh Phương", en: "Minh Phương's Progress", fr: "Progression de Minh Phương" },
@@ -85,6 +87,7 @@ function App() {
     <Layout language={language} active={active} onLanguageChange={setLanguage} onNavigate={navigate}>
       {active === "home" && <Home language={language} progress={progress} onNavigate={navigate} />}
       {active === "daily" && <DailyDrive language={language} onProgressChange={setProgress} />}
+      {active === "swipe-cards" && <SwipeCards language={language} onProgressChange={setProgress} />}
       {active === "practice-maxime" && <PracticeWithMaxime language={language} onProgressChange={setProgress} />}
       {active === "audio-game" && <AudioActionGame language={language} onProgressChange={setProgress} />}
       {active === "progress" && <ProgressPage language={language} progress={progress} onProgressChange={setProgress} />}

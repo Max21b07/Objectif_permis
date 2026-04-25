@@ -311,6 +311,31 @@ export const ui = {
     en: "Listen to Maxime & tap",
     fr: "Écoute Maxime & touche",
   },
+  swipeCards: {
+    vi: "Swipe Cards",
+    en: "Swipe Cards",
+    fr: "Swipe Cards",
+  },
+  swipeCardsSubtitle: {
+    vi: "Một câu hỏi, hai câu trả lời. Vuốt trái hoặc phải để chọn nhanh như thẻ TikTok.",
+    en: "One question, two answers. Swipe left or right to choose quickly like a TikTok card.",
+    fr: "Une question, deux réponses. Swipe gauche ou droite pour répondre comme une carte TikTok.",
+  },
+  swipeLeft: {
+    vi: "Vuốt trái",
+    en: "Swipe left",
+    fr: "Swipe gauche",
+  },
+  swipeRight: {
+    vi: "Vuốt phải",
+    en: "Swipe right",
+    fr: "Swipe droite",
+  },
+  swipeUpDown: {
+    vi: "Vuốt lên để tiếp tục, xuống để xem giải thích.",
+    en: "Swipe up to continue, down to show the explanation.",
+    fr: "Swipe vers le haut pour continuer, vers le bas pour afficher l'explication.",
+  },
   audioGameSubtitle: {
     vi: "Nghe một consigne tiếng Pháp rồi bấm vào hành động đúng: phanh, ga, còi, xi-nhan, gương...",
     en: "Listen to one French command, then tap the right action: brake, accelerator, horn, indicator, mirror...",

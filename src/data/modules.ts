@@ -12,6 +12,16 @@ export const modules: ModuleInfo[] = [
     },
   },
   {
+    id: "swipe-cards",
+    icon: "🎴",
+    title: { vi: "Swipe Cards", en: "Swipe Cards", fr: "Swipe Cards" },
+    description: {
+      vi: "Lướt trái/phải để chọn giữa 2 câu trả lời. Lên để tiếp tục, xuống để xem giải thích.",
+      en: "Swipe left/right to choose between 2 answers. Up to continue, down to show the explanation.",
+      fr: "Swiper gauche/droite pour choisir entre 2 réponses. Haut pour continuer, bas pour voir l'explication.",
+    },
+  },
+  {
     id: "practice-maxime",
     icon: "🗣️",
     title: { vi: "Luyện với Maxime", en: "Practice with Maxime", fr: "Practice with Maxime" },

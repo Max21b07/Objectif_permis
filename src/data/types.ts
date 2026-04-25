@@ -6,6 +6,7 @@ export type ModuleId =
   | "home"
   | "legal"
   | "daily"
+  | "swipe-cards"
   | "practice-maxime"
   | "audio-game"
   | "progress"

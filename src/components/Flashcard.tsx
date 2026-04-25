@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { getMaximeFrenchAudio } from "../data/audioActions";
 import { commands } from "../data/commands";
 import { ui } from "../locales/translations";
 import type { Language } from "../locales/types";
-import { speak } from "../utils/audio";
+import { playAudioOrSpeak, speak } from "../utils/audio";
 import { getProgress, recalculateBadges, saveProgress } from "../utils/progress";
 
 export function Flashcard({ language }: { language: Language }) {
@@ -51,7 +52,7 @@ export function Flashcard({ language }: { language: Language }) {
         <p className="mt-3 font-display text-4xl font-bold">{card.french}</p>
         <p className="mt-2 text-lg text-ink/60">{card.pronunciation}</p>
         <div className="mt-4 flex flex-wrap justify-center gap-2">
-          <button type="button" onClick={() => speak(card.french, "fr")} className="focus-ring rounded-full bg-moss px-4 py-2 text-sm font-extrabold text-white">{ui.listenFrench[language]}</button>
+          <button type="button" onClick={() => playAudioOrSpeak(getMaximeFrenchAudio(card.french), card.french, "fr")} className="focus-ring rounded-full bg-moss px-4 py-2 text-sm font-extrabold text-white">{ui.listenFrench[language]}</button>
           <button type="button" onClick={() => speak(card.english, "en")} className="focus-ring rounded-full bg-skysoft px-4 py-2 text-sm font-extrabold text-moss">{ui.listenEnglish[language]}</button>
           <button type="button" onClick={() => speak(card.vietnamese, "vi")} className="focus-ring rounded-full bg-mint px-4 py-2 text-sm font-extrabold text-moss">{ui.listenVietnamese[language]}</button>
         </div>

@@ -39,3 +39,8 @@ export const audioActions: AudioActionItem[] = [
   { id: "recule-doucement", promptFrench: "Recule doucement", promptVietnamese: "Lùi nhẹ nhàng", promptEnglish: "Reverse gently", target: "reverse", category: "Automatic car basics", audio: { fr: "audio/maxime/19-recule-doucement.wav" } },
   { id: "pieton", promptFrench: "Piéton", promptVietnamese: "Người đi bộ", promptEnglish: "Pedestrian", target: "pedestrian", category: "Pedestrians", audio: { fr: "audio/maxime/20-pieton.wav" } },
 ];
+
+export function getMaximeFrenchAudio(french: string): string | undefined {
+  const normalized = french.trim().toLowerCase();
+  return audioActions.find((item) => item.promptFrench.toLowerCase() === normalized)?.audio?.fr;
+}
