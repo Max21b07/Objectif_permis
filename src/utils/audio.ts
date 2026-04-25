@@ -6,6 +6,11 @@ const voiceLang: Record<Language, string> = {
   fr: "fr-FR",
 };
 
+function resolvePublicAudioPath(src: string): string {
+  if (/^(https?:|data:|blob:|\/)/.test(src)) return src;
+  return `${import.meta.env.BASE_URL}${src.replace(/^\/+/, "")}`;
+}
+
 export function stopSpeaking(): void {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   try {
@@ -38,7 +43,7 @@ export function playAudioOrSpeak(src: string | undefined, fallbackText: string, 
 
   try {
     stopSpeaking();
-    const audio = new Audio(src);
+    const audio = new Audio(resolvePublicAudioPath(src));
     audio.onerror = () => speak(fallbackText, lang);
     void audio.play().catch(() => speak(fallbackText, lang));
   } catch {

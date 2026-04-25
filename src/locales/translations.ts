@@ -327,9 +327,9 @@ export const ui = {
     fr: "Touchez la bonne action",
   },
   syntheticVoiceNote: {
-    vi: "Hiện tại dùng giọng tổng hợp của trình duyệt. Có thể thêm file giọng Maxime sau, nhưng không nên public nếu chưa chắc.",
-    en: "Currently uses browser speech. Maxime voice files can be added later, but should not be public unless intended.",
-    fr: "Utilise actuellement la voix du navigateur. Les fichiers voix de Maxime peuvent être ajoutés plus tard, mais pas en public sans décision claire.",
+    vi: "Dùng giọng Maxime cho các consigne có file âm thanh. Nếu file không tải được, trang sẽ dùng giọng của trình duyệt.",
+    en: "Uses Maxime's voice for commands with an audio file. If a file cannot load, the browser voice is used as fallback.",
+    fr: "Utilise la voix de Maxime pour les consignes avec fichier audio. Si un fichier ne charge pas, la voix du navigateur prend le relais.",
   },
   beforePractice: {
     vi: "Trước buổi lái",
