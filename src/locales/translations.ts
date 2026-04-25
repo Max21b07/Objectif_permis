@@ -306,6 +306,11 @@ export const ui = {
     en: "Practice with Maxime",
     fr: "Practice with Maxime",
   },
+  maximeWhatSays: {
+    vi: "Maxime nói gì?",
+    en: "What does Maxime say?",
+    fr: "Que dit Maxime ?",
+  },
   audioGame: {
     vi: "Nghe Maxime & bấm đúng",
     en: "Listen to Maxime & tap",

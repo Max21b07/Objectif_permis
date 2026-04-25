@@ -49,11 +49,14 @@ export function Dashboard({
 }) {
   const recentBadge = badges.find((badge) => badge.id === progress.unlockedBadges.at(-1));
   const percent = progressPercent(progress);
+  const flashcardsLabel = language === "vi" ? "Thẻ học" : "Flashcards";
+  const quizLabel = language === "vi" ? "Quiz nhanh" : "Quiz";
+  const firstBadgeLabel = language === "vi" ? "🌱 Bài đầu tiên sắp mở" : language === "fr" ? "🌱 Premier badge bientôt" : "🌱 First lesson soon";
   const quickLinks: Array<{ id: ModuleId; label: string; icon: string }> = [
     { id: "daily", label: ui.dailyDrive[language], icon: "⚡" },
     { id: "swipe-cards", label: ui.swipeCards[language], icon: "🎴" },
-    { id: "commands", label: "Flashcards", icon: "🃏" },
-    { id: "quiz", label: "Quiz", icon: "✅" },
+    { id: "commands", label: flashcardsLabel, icon: "🃏" },
+    { id: "quiz", label: quizLabel, icon: "✅" },
     { id: "practice-maxime", label: ui.practiceMaxime[language], icon: "🗣️" },
     { id: "audio-game", label: ui.audioGame[language], icon: "🎧" },
     { id: "progress", label: ui.progressPage[language], icon: "📈" },
@@ -89,7 +92,7 @@ export function Dashboard({
         </div>
         <div className={cardClass("bg-cream")}>
           <p className="text-sm font-extrabold text-clay">{ui.recentBadge[language]}</p>
-          <p className="mt-1 text-lg font-extrabold">{recentBadge ? `${recentBadge.icon} ${recentBadge.title[language]}` : "🌱 First lesson soon"}</p>
+          <p className="mt-1 text-lg font-extrabold">{recentBadge ? `${recentBadge.icon} ${recentBadge.title[language]}` : firstBadgeLabel}</p>
         </div>
       </div>
       <div className="md:col-span-2">
@@ -230,14 +233,15 @@ type SwipeCard = {
 };
 
 function buildSwipeCards(): SwipeCard[] {
-  return quizQuestions.slice(0, 24).map((question) => {
+  return quizQuestions.slice(0, 24).map((question, index) => {
     const correctAnswer = question.answers[question.correctIndex];
     const wrongAnswer = question.answers.find((_, index) => index !== question.correctIndex) ?? question.answers[0];
+    const correctIndex = index % 2 === 0 ? 0 : 1;
     return {
       id: `swipe-${question.id}`,
       question: question.question,
-      answers: [correctAnswer, wrongAnswer],
-      correctIndex: 0,
+      answers: correctIndex === 0 ? [correctAnswer, wrongAnswer] : [wrongAnswer, correctAnswer],
+      correctIndex,
       explanation: question.explanation,
       category: question.category,
     };
@@ -411,7 +415,7 @@ export function SwipeCards({ language, onProgressChange }: { language: Language;
 export function DailyDrive({ language, onProgressChange }: { language: Language; onProgressChange: (progress: LearningProgress) => void }) {
   const progress = getProgress();
   const offset = progress.dailySessionsCompleted;
-  const words = pick(vocabulary, 5, offset * 5);
+  const words = pick(vocabulary, 3, offset * 3);
   const dailyCommands = pick(commands, 3, offset * 3);
   const questions = pick(quizQuestions, 3, offset * 3);
   const scenario = miniScenarios[offset % miniScenarios.length];
@@ -490,6 +494,9 @@ function WordStep({ words, language }: { words: VocabularyItem[]; language: Lang
           <div key={word.french} className="rounded-2xl bg-cream p-4">
             <p className="text-xl font-extrabold">{word.french}</p>
             <p className="text-sm text-ink/70">{word.pronunciation} · {word.english} · {word.vietnamese}</p>
+            <button type="button" onClick={() => playAudioOrSpeak(getMaximeFrenchAudio(word.french), word.french, "fr")} className="focus-ring mt-3 rounded-full bg-white px-4 py-2 text-sm font-extrabold text-moss">
+              {ui.listenFrench[language]}
+            </button>
           </div>
         ))}
       </div>
@@ -559,7 +566,32 @@ function MiniQuestion({ question, language, selected, onAnswer }: { question: Qu
 }
 
 export function PracticeWithMaxime({ language, onProgressChange }: { language: Language; onProgressChange: (progress: LearningProgress) => void }) {
-  const session = pick(commands, 10);
+  const requiredCommands = [
+    "Freine",
+    "Ralentis",
+    "Ralentis doucement",
+    "Tourne à droite",
+    "Tourne à gauche",
+    "Va tout droit",
+    "Stop",
+    "Attends",
+    "Laisse passer",
+    "Mets le clignotant",
+    "Regarde le rétroviseur",
+    "Contrôle l'angle mort",
+    "Garde ta droite",
+    "Reste dans ta voie",
+    "Trop vite",
+    "Doucement",
+    "Piéton",
+    "Vélo",
+    "Voiture derrière",
+  ];
+  const progress = getProgress();
+  const maximeCommands = requiredCommands
+    .map((french) => commands.find((command) => command.french === french))
+    .filter((command): command is CommandItem => Boolean(command));
+  const session = pick(maximeCommands, 10, progress.history.filter((item) => item.type === "practice").length * 3);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -590,7 +622,10 @@ export function PracticeWithMaxime({ language, onProgressChange }: { language: L
   return (
     <section className={cardClass()}>
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl font-bold">{ui.practiceMaxime[language]}</h1>
+        <div>
+          <h1 className="font-display text-3xl font-bold">{ui.maximeWhatSays[language]}</h1>
+          <p className="mt-1 text-sm font-bold text-ink/60">{ui.practiceMaxime[language]}</p>
+        </div>
         <ProgressBadge value={`${index + 1}/10`} />
       </div>
       <div className="mt-5 rounded-3xl bg-moss p-6 text-center text-white">
