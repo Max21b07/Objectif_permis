@@ -41,18 +41,24 @@ export function Quiz({ language }: { language: Language }) {
   }
 
   if (!current) {
-    return <p>No question.</p>;
+    return <p>{ui.noQuestion[language]}</p>;
   }
 
   return (
     <section className="rounded-3xl bg-white/90 p-5 shadow-soft ring-1 ring-moss/10">
       <div className="grid gap-3 md:grid-cols-[1fr_180px_auto]">
-        <select value={category} onChange={(event) => { setCategory(event.target.value); reset(); }} className="focus-ring rounded-2xl border border-moss/20 bg-cream px-4 py-3">
-          {categories.map((item) => <option key={item}>{item}</option>)}
-        </select>
-        <select value={level} onChange={(event) => { setLevel(event.target.value as (typeof levels)[number]); reset(); }} className="focus-ring rounded-2xl border border-moss/20 bg-cream px-4 py-3">
-          {levels.map((item) => <option key={item}>{item}</option>)}
-        </select>
+        <label>
+          <span className="sr-only">{ui.quizCategoryLabel[language]}</span>
+          <select value={category} onChange={(event) => { setCategory(event.target.value); reset(); }} className="focus-ring w-full rounded-2xl border border-moss/20 bg-cream px-4 py-3">
+            {categories.map((item) => <option key={item}>{item}</option>)}
+          </select>
+        </label>
+        <label>
+          <span className="sr-only">{ui.quizLevelLabel[language]}</span>
+          <select value={level} onChange={(event) => { setLevel(event.target.value as (typeof levels)[number]); reset(); }} className="focus-ring w-full rounded-2xl border border-moss/20 bg-cream px-4 py-3">
+            {levels.map((item) => <option key={item}>{item}</option>)}
+          </select>
+        </label>
         <button type="button" onClick={reset} className="focus-ring rounded-2xl bg-mint px-4 py-3 font-extrabold text-moss">{ui.restart[language]}</button>
       </div>
 
@@ -89,7 +95,7 @@ export function Quiz({ language }: { language: Language }) {
         </div>
         {answers[current.id] !== undefined && (
           <div className="mt-4 rounded-2xl bg-white p-4">
-            <p className="font-extrabold">{answers[current.id] === current.correctIndex ? "Correct" : "Review this"}</p>
+            <p className="font-extrabold">{answers[current.id] === current.correctIndex ? ui.correct[language] : ui.reviewThis[language]}</p>
             <p className="mt-1 text-sm leading-6 text-ink/75">{current.explanation[language]}</p>
           </div>
         )}
@@ -107,7 +113,7 @@ export function Quiz({ language }: { language: Language }) {
               ? { vi: "Không có lỗi. Tiếp tục ôn để phản xạ nhanh hơn.", en: "No mistakes. Keep reviewing for faster reflexes.", fr: "Aucune erreur. Continuez pour rendre les réflexes plus rapides." }[language]
               : { vi: "Ôn lại các chủ đề có lỗi trước buổi lái tiếp theo.", en: "Review the mistake categories before the next drive.", fr: "Revoir les catégories d'erreurs avant la prochaine séance." }[language]}
           </p>
-          {mistakes.length > 0 && <p className="mt-3 text-sm font-bold">Review: {Array.from(new Set(mistakes.map((item) => item.category))).join(", ")}</p>}
+          {mistakes.length > 0 && <p className="mt-3 text-sm font-bold">{ui.review[language]}: {Array.from(new Set(mistakes.map((item) => item.category))).join(", ")}</p>}
         </div>
       )}
     </section>

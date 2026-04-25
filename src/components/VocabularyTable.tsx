@@ -25,22 +25,28 @@ export function VocabularyTable({ language }: { language: Language }) {
   return (
     <section className="rounded-3xl bg-white/90 p-4 shadow-soft ring-1 ring-moss/10">
       <div className="grid gap-3 md:grid-cols-[1fr_220px_auto_auto]">
-        <input
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder={ui.search[language]}
-          className="focus-ring rounded-2xl border border-moss/20 bg-cream px-4 py-3"
-        />
-        <select
-          value={category}
-          onChange={(event) => setCategory(event.target.value)}
-          className="focus-ring rounded-2xl border border-moss/20 bg-cream px-4 py-3"
-        >
-          <option value="all">{ui.allCategories[language]}</option>
-          {vocabularyCategories.map((name) => (
-            <option key={name} value={name}>{name}</option>
-          ))}
-        </select>
+        <label>
+          <span className="sr-only">{ui.vocabularySearchLabel[language]}</span>
+          <input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={ui.search[language]}
+            className="focus-ring w-full rounded-2xl border border-moss/20 bg-cream px-4 py-3"
+          />
+        </label>
+        <label>
+          <span className="sr-only">{ui.vocabularyCategoryLabel[language]}</span>
+          <select
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+            className="focus-ring w-full rounded-2xl border border-moss/20 bg-cream px-4 py-3"
+          >
+            <option value="all">{ui.allCategories[language]}</option>
+            {vocabularyCategories.map((name) => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+        </label>
         <button type="button" onClick={() => setVitalOnly((value) => !value)} className={`focus-ring rounded-2xl px-4 py-3 font-bold ${vitalOnly ? "bg-clay text-white" : "bg-mint text-moss"}`}>
           {ui.vitalOnly[language]}
         </button>
@@ -52,13 +58,13 @@ export function VocabularyTable({ language }: { language: Language }) {
         <table className="w-full min-w-[900px] border-separate border-spacing-y-2 text-left text-sm">
           <thead>
             <tr className="text-ink/60">
-              <th className="px-3 py-2">French</th>
-              <th className="px-3 py-2">Pronunciation</th>
-              {showTranslations && <th className="px-3 py-2">English</th>}
-              {showTranslations && <th className="px-3 py-2">Vietnamese</th>}
-              <th className="px-3 py-2">{ui.category[language]}</th>
-              <th className="px-3 py-2">{ui.importance[language]}</th>
-              <th className="px-3 py-2">Example</th>
+              <th scope="col" className="px-3 py-2">{ui.french[language]}</th>
+              <th scope="col" className="px-3 py-2">{ui.pronunciation[language]}</th>
+              {showTranslations && <th scope="col" className="px-3 py-2">{ui.english[language]}</th>}
+              {showTranslations && <th scope="col" className="px-3 py-2">{ui.vietnamese[language]}</th>}
+              <th scope="col" className="px-3 py-2">{ui.category[language]}</th>
+              <th scope="col" className="px-3 py-2">{ui.importance[language]}</th>
+              <th scope="col" className="px-3 py-2">{ui.example[language]}</th>
             </tr>
           </thead>
           <tbody>

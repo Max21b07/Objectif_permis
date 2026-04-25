@@ -29,7 +29,7 @@ export function Layout({ language, active, onLanguageChange, onNavigate, childre
             onClick={() => onNavigate("home")}
             className={`focus-ring whitespace-nowrap rounded-full px-4 py-2 text-sm font-extrabold ${active === "home" ? "bg-moss text-white" : "bg-white/80 text-moss"}`}
           >
-            Home
+            {ui.home[language]}
           </button>
           {modules.map((module) => (
             <button

@@ -100,7 +100,7 @@ function Home({ language, onNavigate }: { language: Language; onNavigate: (id: M
               {ui.startLearning[language]}
             </button>
             <button type="button" onClick={() => onNavigate("commands")} className="focus-ring rounded-full bg-white px-5 py-3 font-extrabold text-moss shadow-sm">
-              Essential commands
+              {pageTitles.commands[language]}
             </button>
           </div>
         </div>
@@ -202,10 +202,10 @@ function VietnamFrance({ language }: { language: Language }) {
       <div className="grid gap-4">
         {vietnamVsFrance.map((item) => (
           <article key={item.id} className="grid gap-3 rounded-3xl bg-white/90 p-5 shadow-soft ring-1 ring-moss/10 md:grid-cols-4">
-            <InfoBlock title="Vietnam" text={item.vietnamHabit[language]} tone="cream" />
-            <InfoBlock title="France" text={item.franceChange[language]} tone="mint" />
-            <InfoBlock title="Risk" text={item.risk[language]} tone="rose" />
-            <InfoBlock title="Reflex" text={item.reflex[language]} tone="sky" />
+            <InfoBlock title={ui.vietnam[language]} text={item.vietnamHabit[language]} tone="cream" />
+            <InfoBlock title={ui.france[language]} text={item.franceChange[language]} tone="mint" />
+            <InfoBlock title={ui.risk[language]} text={item.risk[language]} tone="rose" />
+            <InfoBlock title={ui.reflex[language]} text={item.reflex[language]} tone="sky" />
           </article>
         ))}
       </div>
@@ -229,7 +229,15 @@ function Commands({ language }: { language: Language }) {
       <Flashcard language={language} />
       <div className="mt-6 overflow-x-auto rounded-3xl bg-white/90 p-4 shadow-soft ring-1 ring-moss/10">
         <table className="w-full min-w-[850px] border-separate border-spacing-y-2 text-left text-sm">
-          <thead><tr className="text-ink/60"><th>French</th><th>Simple pronunciation</th><th>English</th><th>Vietnamese</th><th>Gesture / Situation</th></tr></thead>
+          <thead>
+            <tr className="text-ink/60">
+              <th scope="col">{ui.french[language]}</th>
+              <th scope="col">{ui.pronunciation[language]}</th>
+              <th scope="col">{ui.english[language]}</th>
+              <th scope="col">{ui.vietnamese[language]}</th>
+              <th scope="col">{ui.gestureSituation[language]}</th>
+            </tr>
+          </thead>
           <tbody>
             {commands.map((command) => (
               <tr key={command.french} className="bg-cream">
@@ -250,7 +258,7 @@ function Commands({ language }: { language: Language }) {
 function Vocabulary({ language }: { language: Language }) {
   return (
     <div>
-      <SectionTitle title={pageTitles.vocabulary[language]} subtitle="French | Pronunciation | English | Vietnamese | Category | Example" />
+      <SectionTitle title={pageTitles.vocabulary[language]} subtitle={`${ui.french[language]} | ${ui.pronunciation[language]} | ${ui.english[language]} | ${ui.vietnamese[language]} | ${ui.category[language]} | ${ui.example[language]}`} />
       <VocabularyTable language={language} />
     </div>
   );
@@ -273,7 +281,7 @@ function Automatic({ language }: { language: Language }) {
         ))}
       </div>
       <section className="mt-6 rounded-3xl bg-moss p-5 text-white shadow-soft">
-        <h2 className="font-display text-3xl font-bold">Checklist</h2>
+        <h2 className="font-display text-3xl font-bold">{ui.checklist[language]}</h2>
         <ol className="mt-4 grid gap-2">
           {automaticChecklist.map((item, index) => <li key={item.en} className="rounded-2xl bg-white/10 p-3">{index + 1}. {item[language]}</li>)}
         </ol>
@@ -291,18 +299,18 @@ function Training({ language }: { language: Language }) {
           <article key={session.session} className="rounded-3xl bg-white/90 p-5 shadow-soft ring-1 ring-moss/10">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="font-extrabold text-clay">Week {session.week} · Session {session.session} · {session.duration}</p>
+                <p className="font-extrabold text-clay">{ui.week[language]} {session.week} · {ui.session[language]} {session.session} · {session.duration}</p>
                 <h2 className="font-display text-2xl font-bold">{session.objective[language]}</h2>
                 <p className="mt-1 text-sm font-bold text-moss">{session.level[language]}</p>
               </div>
-              <span className="rounded-full bg-skysoft px-3 py-1 text-sm font-extrabold">{session.stress} stress</span>
+              <span className="rounded-full bg-skysoft px-3 py-1 text-sm font-extrabold">{session.stress} {ui.stress[language]}</span>
             </div>
             <p className="mt-3 rounded-2xl bg-rosewash p-3 text-sm font-bold text-clay">{session.legalPlace[language]}</p>
             <div className="mt-4 grid gap-4 md:grid-cols-4">
-              <ListBox title="Exercises" items={session.exercises.map((item) => item[language])} />
+              <ListBox title={ui.exercises[language]} items={session.exercises.map((item) => item[language])} />
               <ListBox title="Vocabulary" items={session.vocabulary} />
-              <ListBox title="Watch" items={session.watch.map((item) => item[language])} />
-              <ListBox title="Success" items={session.success.map((item) => item[language])} />
+              <ListBox title={ui.watch[language]} items={session.watch.map((item) => item[language])} />
+              <ListBox title={ui.success[language]} items={session.success.map((item) => item[language])} />
             </div>
           </article>
         ))}
@@ -332,17 +340,17 @@ function Husband({ language }: { language: Language }) {
       }[language]} />
       <div className="grid gap-4 md:grid-cols-[1fr_0.9fr]">
         <section className="rounded-3xl bg-white/90 p-5 shadow-soft ring-1 ring-moss/10">
-          <h2 className="font-display text-2xl font-bold">Coaching rules</h2>
+          <h2 className="font-display text-2xl font-bold">{ui.coachingRules[language]}</h2>
           <ul className="mt-4 grid gap-2">
             {husbandGuidelines.map((item) => <li key={item.en} className="rounded-2xl bg-cream p-3">{item[language]}</li>)}
           </ul>
         </section>
         <section className="rounded-3xl bg-moss p-5 text-white shadow-soft">
-          <h2 className="font-display text-2xl font-bold">Feedback scale</h2>
+          <h2 className="font-display text-2xl font-bold">{ui.feedbackScale[language]}</h2>
           <div className="mt-4 grid gap-2">
             {husbandScale.map((item) => <p key={item} className="rounded-2xl bg-white/10 p-3 font-extrabold">{item}</p>)}
           </div>
-          <h2 className="mt-6 font-display text-2xl font-bold">Useful English phrases</h2>
+          <h2 className="mt-6 font-display text-2xl font-bold">{ui.usefulEnglishPhrases[language]}</h2>
           <ul className="mt-4 grid gap-2 text-sm">
             {husbandPhrases.map((item) => <li key={item} className="rounded-2xl bg-white/10 p-3">{item}</li>)}
           </ul>

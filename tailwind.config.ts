@@ -15,8 +15,8 @@ export default {
         rosewash: "#f6ded8",
       },
       fontFamily: {
-        display: ["Fraunces", "Georgia", "serif"],
-        body: ["Nunito", "Verdana", "sans-serif"],
+        display: ["Avenir Next", "Georgia", "serif"],
+        body: ["Avenir", "Trebuchet MS", "Verdana", "sans-serif"],
       },
       boxShadow: {
         soft: "0 18px 55px rgba(47, 70, 54, 0.14)",

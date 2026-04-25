@@ -10,6 +10,10 @@ export function Flashcard({ language }: { language: Language }) {
   const [review, setReview] = useState(0);
   const card = commands[index % commands.length];
 
+  if (!card) {
+    return <p>{ui.noQuestion[language]}</p>;
+  }
+
   function next(mark: "known" | "review") {
     if (mark === "known") setKnown((value) => value + 1);
     else setReview((value) => value + 1);
@@ -26,14 +30,14 @@ export function Flashcard({ language }: { language: Language }) {
         </span>
       </div>
       <div className="mt-5 rounded-3xl bg-white p-6 text-center text-ink">
-        <p className="text-sm font-bold uppercase tracking-[0.2em] text-clay">French</p>
+        <p className="text-sm font-bold uppercase tracking-[0.2em] text-clay">{ui.french[language]}</p>
         <p className="mt-3 font-display text-4xl font-bold">{card.french}</p>
         <p className="mt-2 text-lg text-ink/60">{card.pronunciation}</p>
         {revealed && (
           <div className="mt-5 grid gap-2 rounded-2xl bg-cream p-4 text-left">
-            <p><strong>English:</strong> {card.english}</p>
-            <p><strong>Tiếng Việt:</strong> {card.vietnamese}</p>
-            <p><strong>Situation:</strong> {card.situation[language]}</p>
+            <p><strong>{ui.english[language]}:</strong> {card.english}</p>
+            <p><strong>{ui.vietnamese[language]}:</strong> {card.vietnamese}</p>
+            <p><strong>{ui.gestureSituation[language]}:</strong> {card.situation[language]}</p>
           </div>
         )}
       </div>
