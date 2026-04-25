@@ -29,3 +29,19 @@ export function speak(text: string, lang: Language | "fr-FR" | "en-US" | "vi-VN"
     // iOS Safari may refuse speech in some contexts; fail silently.
   }
 }
+
+export function playAudioOrSpeak(src: string | undefined, fallbackText: string, lang: Language): void {
+  if (typeof window === "undefined" || !src) {
+    speak(fallbackText, lang);
+    return;
+  }
+
+  try {
+    stopSpeaking();
+    const audio = new Audio(src);
+    audio.onerror = () => speak(fallbackText, lang);
+    void audio.play().catch(() => speak(fallbackText, lang));
+  } catch {
+    speak(fallbackText, lang);
+  }
+}

@@ -22,6 +22,16 @@ export const modules: ModuleInfo[] = [
     },
   },
   {
+    id: "audio-game",
+    icon: "🎧",
+    title: { vi: "Nghe & bấm", en: "Listen & Tap", fr: "Écoute & touche" },
+    description: {
+      vi: "Mini-jeu: nghe consigne tiếng Pháp rồi bấm phanh, ga, còi, xi-nhan hoặc gương.",
+      en: "Mini-game: hear a French command then tap brake, accelerator, horn, indicator or mirror.",
+      fr: "Mini-jeu : entendre une consigne puis toucher frein, accélérateur, klaxon, clignotant ou miroir.",
+    },
+  },
+  {
     id: "progress",
     icon: "📈",
     title: { vi: "Tiến bộ", en: "Progress", fr: "Progression" },

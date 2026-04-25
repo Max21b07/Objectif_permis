@@ -306,6 +306,31 @@ export const ui = {
     en: "Practice with Maxime",
     fr: "Practice with Maxime",
   },
+  audioGame: {
+    vi: "Nghe Maxime & bấm đúng",
+    en: "Listen to Maxime & tap",
+    fr: "Écoute Maxime & touche",
+  },
+  audioGameSubtitle: {
+    vi: "Nghe một consigne tiếng Pháp rồi bấm vào hành động đúng: phanh, ga, còi, xi-nhan, gương...",
+    en: "Listen to one French command, then tap the right action: brake, accelerator, horn, indicator, mirror...",
+    fr: "Écouter une consigne en français, puis toucher la bonne action : frein, accélérateur, klaxon, clignotant, miroir...",
+  },
+  playCommand: {
+    vi: "Nghe consigne",
+    en: "Play command",
+    fr: "Écouter la consigne",
+  },
+  tapAction: {
+    vi: "Bấm hành động đúng",
+    en: "Tap the right action",
+    fr: "Touchez la bonne action",
+  },
+  syntheticVoiceNote: {
+    vi: "Hiện tại dùng giọng tổng hợp của trình duyệt. Có thể thêm file giọng Maxime sau, nhưng không nên public nếu chưa chắc.",
+    en: "Currently uses browser speech. Maxime voice files can be added later, but should not be public unless intended.",
+    fr: "Utilise actuellement la voix du navigateur. Les fichiers voix de Maxime peuvent être ajoutés plus tard, mais pas en public sans décision claire.",
+  },
   beforePractice: {
     vi: "Trước buổi lái",
     en: "Before Practice",

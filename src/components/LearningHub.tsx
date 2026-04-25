@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { badges } from "../data/badges";
 import { commands } from "../data/commands";
+import { actionButtons, audioActions } from "../data/audioActions";
 import { miniScenarios } from "../data/scenarios";
 import type { CommandItem, MiniScenario, ModuleId, QuizQuestion, VocabularyItem } from "../data/types";
 import { quizQuestions } from "../data/quiz";
 import { vocabulary } from "../data/vocabulary";
 import { ui } from "../locales/translations";
 import type { Language } from "../locales/types";
-import { speak } from "../utils/audio";
+import { playAudioOrSpeak, speak } from "../utils/audio";
 import {
   getProgress,
   progressPercent,
@@ -53,6 +54,7 @@ export function Dashboard({
     { id: "commands", label: "Flashcards", icon: "🃏" },
     { id: "quiz", label: "Quiz", icon: "✅" },
     { id: "practice-maxime", label: ui.practiceMaxime[language], icon: "🗣️" },
+    { id: "audio-game", label: ui.audioGame[language], icon: "🎧" },
     { id: "progress", label: ui.progressPage[language], icon: "📈" },
   ];
 
@@ -91,7 +93,7 @@ export function Dashboard({
       </div>
       <div className="md:col-span-2">
         <p className="mb-3 font-extrabold text-moss">{ui.quickAccess[language]}</p>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-6">
           {quickLinks.map((link) => (
             <button key={link.id} type="button" onClick={() => onNavigate(link.id)} className="focus-ring rounded-3xl bg-white/90 p-4 text-left shadow-soft ring-1 ring-moss/10">
               <span className="text-3xl" aria-hidden="true">{link.icon}</span>
@@ -99,6 +101,110 @@ export function Dashboard({
             </button>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+export function AudioActionGame({ language, onProgressChange }: { language: Language; onProgressChange: (progress: LearningProgress) => void }) {
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [finished, setFinished] = useState(false);
+  const item = audioActions[index % audioActions.length];
+  const correct = selected === item.target;
+  const progressLabel = `${index + 1}/${audioActions.length}`;
+
+  function playCurrent() {
+    playAudioOrSpeak(item.audio?.fr, item.promptFrench, "fr");
+  }
+
+  function choose(action: string) {
+    if (selected !== null) return;
+    setSelected(action);
+    if (action === item.target) setScore((value) => value + 1);
+  }
+
+  function next() {
+    if (index >= audioActions.length - 1) {
+      const finalScore = Math.round(score / audioActions.length * 100);
+      const progress = getProgress();
+      const nextProgress = recordSession(
+        { ...progress, moduleProgress: { ...progress.moduleProgress, "French commands": Math.min(100, progress.moduleProgress["French commands"] + 10) } },
+        { id: cryptoId(), date: todayIso(), type: "practice", score: finalScore, categories: ["French commands", item.category] },
+      );
+      saveProgress(nextProgress);
+      onProgressChange(nextProgress);
+      setFinished(true);
+      return;
+    }
+    setIndex((value) => value + 1);
+    setSelected(null);
+  }
+
+  if (finished) {
+    const finalScore = Math.round(score / audioActions.length * 100);
+    return (
+      <section className={cardClass("text-center")}>
+        <p className="text-5xl">🎧</p>
+        <h1 className="mt-3 font-display text-4xl font-bold">{ui.audioGame[language]}</h1>
+        <p className="mt-3 text-3xl font-extrabold">{ui.score[language]}: {finalScore}%</p>
+        <p className="mx-auto mt-3 max-w-lg leading-7 text-ink/70">{ui.encouragement[language]}</p>
+        <button type="button" onClick={() => { setIndex(0); setScore(0); setSelected(null); setFinished(false); }} className="focus-ring mt-5 rounded-3xl bg-moss px-6 py-4 font-extrabold text-white">
+          {ui.anotherQuickSession[language]}
+        </button>
+      </section>
+    );
+  }
+
+  return (
+    <section className="grid gap-5">
+      <SafetyWarning language={language} compact />
+      <div className={cardClass()}>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h1 className="font-display text-4xl font-bold">{ui.audioGame[language]}</h1>
+            <p className="mt-2 max-w-2xl leading-7 text-ink/70">{ui.audioGameSubtitle[language]}</p>
+          </div>
+          <ProgressBadge value={progressLabel} />
+        </div>
+        <p className="mt-4 rounded-2xl bg-skysoft p-3 text-sm font-bold text-moss">{ui.syntheticVoiceNote[language]}</p>
+        <div className="mt-5 rounded-[2rem] bg-moss p-6 text-center text-white">
+          <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-mint">Maxime says</p>
+          <p className="mt-3 font-display text-5xl font-bold">{selected === null ? "•••" : item.promptFrench}</p>
+          <button type="button" onClick={playCurrent} className="focus-ring mt-5 w-full rounded-3xl bg-lemon px-5 py-4 text-lg font-extrabold text-ink md:w-auto">
+            {ui.playCommand[language]}
+          </button>
+        </div>
+        <p className="mt-5 font-extrabold text-moss">{ui.tapAction[language]}</p>
+        <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
+          {actionButtons.map((action) => {
+            const isSelected = selected === action.id;
+            const isCorrect = item.target === action.id;
+            const state = selected === null ? "bg-cream" : isCorrect ? "bg-mint text-moss" : isSelected ? "bg-rosewash text-clay" : "bg-cream opacity-65";
+            return (
+              <button
+                key={action.id}
+                type="button"
+                onClick={() => choose(action.id)}
+                className={`focus-ring min-h-28 rounded-3xl p-4 text-center font-extrabold ${state}`}
+                aria-label={action.label[language]}
+              >
+                <span className="block text-4xl" aria-hidden="true">{action.emoji}</span>
+                <span className="mt-2 block">{action.label[language]}</span>
+              </button>
+            );
+          })}
+        </div>
+        {selected !== null && (
+          <div className="mt-4 rounded-2xl bg-white p-4 ring-1 ring-moss/10">
+            <p className="font-extrabold">{correct ? ui.correct[language] : ui.reviewThis[language]}</p>
+            <p className="mt-1 text-sm text-ink/70">{item.promptFrench} = {item.promptEnglish} = {item.promptVietnamese}</p>
+          </div>
+        )}
+        <button type="button" onClick={next} disabled={selected === null} className="focus-ring mt-5 w-full rounded-3xl bg-clay px-5 py-4 font-extrabold text-white disabled:opacity-45">
+          {ui.next[language]}
+        </button>
       </div>
     </section>
   );

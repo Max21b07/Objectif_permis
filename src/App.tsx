@@ -23,6 +23,7 @@ import { getInitialLanguage, setLanguage as saveLanguage } from "./utils/languag
 import { getProgress, type LearningProgress } from "./utils/progress";
 import {
   AfterPractice,
+  AudioActionGame,
   BeforePractice,
   DailyDrive,
   Dashboard,
@@ -35,6 +36,7 @@ const pageTitles: Record<ModuleId, LocalizedString> = {
   home: { vi: "Học lái xe ở Pháp, từng bước an toàn", en: "Learn French driving basics safely", fr: "Apprendre les bases de la conduite en France" },
   daily: { vi: "Daily Drive 5 phút", en: "5-minute Daily Drive", fr: "Daily Drive 5 minutes" },
   "practice-maxime": { vi: "Luyện với Maxime", en: "Practice with Maxime", fr: "Practice with Maxime" },
+  "audio-game": { vi: "Nghe Maxime & bấm đúng", en: "Listen to Maxime & tap", fr: "Écoute Maxime & touche" },
   progress: { vi: "Tiến bộ của Minh Phương", en: "Minh Phương's Progress", fr: "Progression de Minh Phương" },
   "before-practice": { vi: "Checklist trước buổi lái", en: "Before Practice Checklist", fr: "Checklist avant séance" },
   "after-practice": { vi: "Debrief sau buổi lái", en: "After Practice Debrief", fr: "Débrief après séance" },
@@ -84,6 +86,7 @@ function App() {
       {active === "home" && <Home language={language} progress={progress} onNavigate={navigate} />}
       {active === "daily" && <DailyDrive language={language} onProgressChange={setProgress} />}
       {active === "practice-maxime" && <PracticeWithMaxime language={language} onProgressChange={setProgress} />}
+      {active === "audio-game" && <AudioActionGame language={language} onProgressChange={setProgress} />}
       {active === "progress" && <ProgressPage language={language} progress={progress} onProgressChange={setProgress} />}
       {active === "before-practice" && <BeforePractice language={language} onNavigate={navigate} />}
       {active === "after-practice" && <AfterPractice language={language} onProgressChange={setProgress} />}

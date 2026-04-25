@@ -7,6 +7,7 @@ export type ModuleId =
   | "legal"
   | "daily"
   | "practice-maxime"
+  | "audio-game"
   | "progress"
   | "before-practice"
   | "after-practice"
@@ -120,4 +121,17 @@ export interface MiniScenario {
   category: string;
   level: "easy" | "medium";
   visual: "roundabout" | "priority" | "pedestrian" | "stop" | "yield" | "lane" | "blindspot" | "bike" | "bus" | "zone30" | "rain" | "parking";
+}
+
+export interface AudioActionItem {
+  id: string;
+  promptFrench: string;
+  promptVietnamese: string;
+  promptEnglish: string;
+  target: string;
+  category: string;
+  audio?: {
+    fr?: string;
+    vi?: string;
+  };
 }
