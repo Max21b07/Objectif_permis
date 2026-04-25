@@ -126,6 +126,31 @@ export const ui = {
     en: "Home",
     fr: "Accueil",
   },
+  navHome: {
+    vi: "Trang chủ",
+    en: "Home",
+    fr: "Accueil",
+  },
+  navDaily: {
+    vi: "Hằng ngày",
+    en: "Daily",
+    fr: "Quotidien",
+  },
+  navFlashcards: {
+    vi: "Thẻ học",
+    en: "Cards",
+    fr: "Cartes",
+  },
+  navQuiz: {
+    vi: "Quiz",
+    en: "Quiz",
+    fr: "Quiz",
+  },
+  navProgress: {
+    vi: "Tiến độ",
+    en: "Progress",
+    fr: "Progrès",
+  },
   vietnam: {
     vi: "Việt Nam",
     en: "Vietnam",

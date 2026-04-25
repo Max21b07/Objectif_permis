@@ -21,11 +21,29 @@ import {
 import { ProgressBadge } from "./ProgressBadge";
 import { SafetyWarning } from "./SafetyWarning";
 
-const todayIso = () => new Date().toISOString().slice(0, 10);
+const todayIso = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 function pick<T>(items: T[], count: number, offset = 0): T[] {
   if (items.length === 0) return [];
   return Array.from({ length: Math.min(count, items.length) }, (_, index) => items[(index + offset) % items.length]);
+}
+
+function stableShuffle<T>(items: T[], seed: string): T[] {
+  return [...items].sort((left, right) => {
+    const leftKey = `${seed}:${JSON.stringify(left)}`;
+    const rightKey = `${seed}:${JSON.stringify(right)}`;
+    let leftHash = 0;
+    let rightHash = 0;
+    for (let index = 0; index < leftKey.length; index += 1) leftHash = (leftHash * 31 + leftKey.charCodeAt(index)) >>> 0;
+    for (let index = 0; index < rightKey.length; index += 1) rightHash = (rightHash * 31 + rightKey.charCodeAt(index)) >>> 0;
+    return leftHash - rightHash;
+  });
 }
 
 function cardClass(extra = "") {
@@ -600,7 +618,8 @@ export function PracticeWithMaxime({ language, onProgressChange }: { language: L
 
   function optionsFor(command: CommandItem) {
     const wrong = commands.filter((item) => item.french !== command.french).slice(index + 1, index + 3);
-    return [command, ...wrong].map((item) => ({ label: language === "vi" ? item.vietnamese : item.english, correct: item.french === command.french }));
+    const options = stableShuffle([command, ...wrong], `${command.french}-${index}`);
+    return options.map((item) => ({ label: language === "vi" ? item.vietnamese : item.english, correct: item.french === command.french }));
   }
 
   if (done) {

@@ -14,11 +14,11 @@ interface Props {
 
 export function Layout({ language, active, onLanguageChange, onNavigate, children }: Props) {
   const bottomItems: Array<{ id: ModuleId; label: string; icon: string }> = [
-    { id: "home", label: ui.home[language], icon: "🏠" },
-    { id: "daily", label: "Daily", icon: "⚡" },
-    { id: "commands", label: "Cards", icon: "🃏" },
-    { id: "quiz", label: "Quiz", icon: "✅" },
-    { id: "progress", label: ui.progressPage[language], icon: "📈" },
+    { id: "home", label: ui.navHome[language], icon: "🏠" },
+    { id: "daily", label: ui.navDaily[language], icon: "⚡" },
+    { id: "commands", label: ui.navFlashcards[language], icon: "🃏" },
+    { id: "quiz", label: ui.navQuiz[language], icon: "✅" },
+    { id: "progress", label: ui.navProgress[language], icon: "📈" },
   ];
 
   return (
